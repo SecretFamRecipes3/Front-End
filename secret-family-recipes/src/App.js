@@ -3,8 +3,10 @@ import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 
 
 import Header from './components/Header';
+import PrivateRoute from './components/PrivateRoute';
 
 import './App.css';
+
 
 function App() {
   return (
@@ -13,11 +15,12 @@ function App() {
         <header className="App-header">
           <Header />
         </header>
-      {/* <Switch>
-        <Route path="/login" component={Login} />
-        <Route path="/signup" component={Signup} />
-        <Route path="/logout" component={Logout} />
-      </Switch> */}
+      <Switch>
+        <PrivateRoute exact path="/protected" component={UserProfile} />
+        {/* <Route path="/login" component={Login} /> */}
+        {/* <Route path="/signup" component={Signup} /> */}
+        {/* <Route path="/logout" component={Logout} /> */}
+      </Switch>
       </div>
     </Router>
   );
