@@ -9,12 +9,14 @@ function Header(props) {
             <div className="navLinks">
                 <Link to="/login">Login</Link>
                 <Link to="/signup">SignUp</Link>
+                <Link to="/userprofile">Profile</Link>
             </div>
         )}
         {props.loggedIn && (
             <div className="navLinks">
                 <Link to="/logout">Log Out</Link>
                 <Link to="/protected">My Recipes</Link>
+                <Link to="/userprofile">Profile</Link>
             </div>
         )}
         </>

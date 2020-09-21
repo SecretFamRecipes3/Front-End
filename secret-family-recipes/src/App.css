@@ -1,6 +1,6 @@
-.App {
+/* .App {
   text-align: center;
-}
+} */
 
 .App-header {
   background-color: #6b8ccf;
@@ -11,5 +11,16 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+}
+
+.recipeContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.recipeCard {
+  border: 2px solid black;
+  margin: 2%;
 }
 

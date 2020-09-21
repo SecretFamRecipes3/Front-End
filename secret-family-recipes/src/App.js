@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 
 import Header from './components/Header';
 import PrivateRoute from './components/PrivateRoute';
+import UserProfile from './components/UserProfile';
 
 import './App.css';
 
@@ -17,6 +18,7 @@ function App() {
         </header>
       <Switch>
         <PrivateRoute exact path="/protected" component={UserProfile} />
+        <Route path="/userprofile" component={UserProfile} />
         {/* <Route path="/login" component={Login} /> */}
         {/* <Route path="/signup" component={Signup} /> */}
         {/* <Route path="/logout" component={Logout} /> */}
