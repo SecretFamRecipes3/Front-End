@@ -2,8 +2,9 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import * as yup from 'yup'
-import schema from '../validation/formSchemaRecipes'
+import schema from './validation/formSchemaRecipes'
 import Recipe from './Recipe'
+
 
 const initialRecipeFormValues = {
     ///// TEXT INPUTS /////
@@ -108,6 +109,7 @@ export default function RecipeForm (props) {
         category: ['breakfast', 'dinner', 'chicken','beef','pork','fish','vegetables', 'soup', 'dessert'].filter(cat => formRecipeValues[cat]),
       }
       //postNewRecipe(newRecipe)
+      // setFormRecipeValues(initialRecipeFormValues)
     }
     // useEffect(() => {
     //   getRecipes()
@@ -127,6 +129,8 @@ export default function RecipeForm (props) {
         inputChange(name, valueToUse)
       }
    
+
+
         return (
             <form className='form container' onSubmit={formSubmit}>
            
@@ -180,7 +184,7 @@ export default function RecipeForm (props) {
                         />
                         </label>
                         <br/>
-                <label>How to do it&nbsp;
+                <label>Recipe Instructions&nbsp;
                         <input
                             value={formRecipeValues.instructions}
                             onChange={onChange}
@@ -192,23 +196,23 @@ export default function RecipeForm (props) {
                       
                 {/* ////////// CHECKBOXES ////////// */}
                 <div className='form-group checkboxes'>
-                <h4>Category</h4>
-                <label>Dinner&nbsp;
-                <input
-                    type="checkbox"
-                    name='dinner'
-                    checked={formRecipeValues.dinner}
-                    onChange={onChange}
-                />
-                </label>
-
+                <h4>Recipe Category:</h4>
                 <label>Breakfast&nbsp;
                 <input
                     type="checkbox"
                     name="breakfast"
                     checked={formRecipeValues.breakfast}
                     onChange={onChange}
-                />
+                />&nbsp;
+                </label>
+
+                <label>Dinner&nbsp;
+                <input
+                    type="checkbox"
+                    name='dinner'
+                    checked={formRecipeValues.dinner}
+                    onChange={onChange}
+                />&nbsp;
                 </label>
 
                 <label>Chicken Dish&nbsp;
@@ -217,7 +221,7 @@ export default function RecipeForm (props) {
                     name="chicken"
                     checked={formRecipeValues.chicken}
                     onChange={onChange}
-                />
+                />&nbsp;
                 </label>  
 
                 <label>Beef Dish&nbsp;
@@ -226,7 +230,7 @@ export default function RecipeForm (props) {
                     name="beef"
                     checked={formRecipeValues.beef}
                     onChange={onChange}
-                />
+                />&nbsp;
                 </label>   
                 
                 <label>Pork Dish&nbsp;
@@ -235,16 +239,16 @@ export default function RecipeForm (props) {
                     name="pork"
                     checked={formRecipeValues.pork}
                     onChange={onChange}
-                />
+                />&nbsp;
                 </label>   
-                
+                <br/>
                  <label>Fish Dish&nbsp;
                 <input
                     type="checkbox"
                     name="fish"
                     checked={formRecipeValues.fish}
                     onChange={onChange}
-                />
+                />&nbsp;
                 </label>  
 
                 <label>Vegetables&nbsp;
@@ -253,7 +257,7 @@ export default function RecipeForm (props) {
                     name="vegetables"
                     checked={formRecipeValues.vegetables}
                     onChange={onChange}
-                />
+                />&nbsp;
                 </label>  
 
                 <label>Soup&nbsp;
@@ -262,7 +266,7 @@ export default function RecipeForm (props) {
                     name="soup"
                     checked={formRecipeValues.soup}
                     onChange={onChange}
-                />
+                />&nbsp;
                 </label>  
 
                 <label>Dessert&nbsp;
@@ -271,7 +275,7 @@ export default function RecipeForm (props) {
                     name="dessert"
                     checked={formRecipeValues.dessert}
                     onChange={onChange}
-                />
+                />&nbsp;
                 </label> 
 
                 <button disabled={disabledRecipe}>submit</button>   
@@ -281,7 +285,7 @@ export default function RecipeForm (props) {
             <Recipe key={details.id} details={details} />
           )
             })}
-
+            
             
             </div>
             </div>

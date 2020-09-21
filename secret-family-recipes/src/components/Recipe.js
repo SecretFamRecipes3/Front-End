@@ -5,6 +5,30 @@ export default function Recipe({ details }) {
     return <h3>Working fetching your recipe&apos;s details...</h3>
   }
 
+
+////edit and delete recipe 
+
+    //   const editRecipe = (id) => {
+    //     axios.delete(`${quotesURL}/${id}`)
+    //       .then(res => { // eslint-disable-line
+    //         setQuotes(quotes.filter(quote => quote.id !== id))
+    //       })
+    //       .catch(handleError)
+    //       .finally(resetForm)
+    //   }
+    
+    
+    //   const editRecipe = (id) => {
+    //     const recipe = recipes.find(q => q.id === id)
+    //     setFormRecipeValues({ ...recipe })
+
+
+
+
+
+
+
+
   return (
     <div className='recipes'>
       <h2>{details.name}</h2>
@@ -22,6 +46,11 @@ export default function Recipe({ details }) {
           </ul>
         </div>
       }
+
+
+<button>Edit</button>
+    {/* <button data-cy={`editBtn${i}`} onClick={() => editRecipe(q.id)}>Edit</button>
+    <button data-cy={`deleteBtn${i}`} onClick={() => deleteRecipe(q.id)}>Delete</button> */}
     </div>
   )
 }
