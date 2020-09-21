@@ -31,6 +31,16 @@ const Signup = () => {
   const submitHandler = (evt) => {
     evt.preventDefault();
 
+    // axios
+    //   .post('http://hsmm-secretfamilyrecipe.herokuapp.com/createnewuser', formValues)
+    //   .then((res) => {
+    //     console.log(res.data);
+    //     setPost(res.data);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+
     const newSignup = {
       username: formValues.username.trim(),
       password: formValues.password.trim(),
@@ -68,7 +78,7 @@ const Signup = () => {
       </div>
       <div className="form-inputs">
         <label>
-          Username
+          Username&nbsp;
           <input
             name="username"
             type="text"
@@ -81,7 +91,7 @@ const Signup = () => {
         <br />
 
         <label>
-          Password
+          Password&nbsp;
           <input
             name="password"
             type="password"
@@ -93,7 +103,7 @@ const Signup = () => {
       </div>
 
       <label>
-        Email:&nbsp;
+        Email&nbsp;
         <input
           name="email"
           type="email"

@@ -76,7 +76,7 @@ const Login = () => {
       </div>
       <div className="form-inputs">
         <label>
-          Username
+          Username&nbsp;
           <input
             name="username"
             type="text"
@@ -89,7 +89,7 @@ const Login = () => {
         <br />
 
         <label>
-          Password
+          Password&nbsp;
           <input
             name="password"
             type="password"
