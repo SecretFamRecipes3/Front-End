@@ -1,10 +1,11 @@
-import React from 'react'
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import theme from './theme';
+import { ThemeProvider } from 'styled-components';
 
 import { createStore, applyMiddleware } from 'redux';
-import  thunk from 'redux-thunk';
-
+import thunk from 'redux-thunk';
 
 import App from './App';
 import reducer from './reducers/index';
@@ -14,13 +15,14 @@ import * as serviceWorker from './serviceWorker';
 import {ThemeProvider } from 'styled-components'
 import theme from './theme'
 
-const store = createStore(reducer, applyMiddleware(thunk))
+const store = createStore(reducer, applyMiddleware(thunk));
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ThemeProvider theme= {theme}>
-      <App />
+
+      <ThemeProvider theme={theme}>
+        <App />
       </ThemeProvider>
     </Provider>
   </React.StrictMode>,
