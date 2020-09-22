@@ -2,6 +2,11 @@ import React, { useState, useEffect } from 'react';
 import * as yup from 'yup';
 import formSchema from './validation/formSchema';
 
+import { axiosWithAuth } from '../utils/axiosWithAuth';
+import { useHistory, Link } from 'react-router-dom';
+import { setLoggedIn, setLoggedOut } from '../actions/index';
+import { connect } from 'react-redux';
+
 const initialFormValues = {
   username: '',
   password: '',
@@ -16,11 +21,12 @@ const initialFormErrors = {
 
 const initialSignup = [];
 
-const Signup = () => {
+const Signup = (props) => {
   const [formValues, setFormValues] = useState(initialFormValues);
   const [savedFormInfo, setSavedFormInfo] = useState(initialSignup);
   const [errors, setErrors] = useState(initialFormErrors);
   const [disabled, setDisabled] = useState(true);
+  const history = useHistory();
 
   const changeHandler = (evt) => {
     const { name, value } = evt.target;
@@ -30,6 +36,14 @@ const Signup = () => {
 
   const submitHandler = (evt) => {
     evt.preventDefault();
+    axiosWithAuth()
+    .post('/createnewuser', formValues)
+    .then(res => {
+      console.log(res)
+    })
+    .catch(err => {
+      console.log(err)
+    })
 
     // axios
     //   .post('http://hsmm-secretfamilyrecipe.herokuapp.com/createnewuser', formValues)
@@ -120,4 +134,10 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+const mapStateToProps = (state) => {
+  return {
+    loggedIn: state.loggedIn,
+  };
+};
+
+export default connect(mapStateToProps, { setLoggedIn, setLoggedOut })(Signup);

@@ -1,19 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { setLoggedIn, setLoggedOut } from './actions/index';
 
 
 import Header from './components/Header';
 import PrivateRoute from './components/PrivateRoute';
 import UserProfile from './components/UserProfile';
-// import logout page
-
-import './App.css';
 import Login from './components/Login';
 import Signup from './components/Signup';
-import RecipeForm from './components/RecipeForm'
+import Logout from './components/Logout';
+import { connect } from 'react-redux';
+
+import './App.css';
 
 
-export default function App() {
+const App = (props) => {
+  useEffect(() => {
+    if (localStorage.getItem('token')){
+      props.setLoggedIn();
+    } else {
+      props.setLoggedOut();
+    }
+  }, [])
+
   return (
     <Router>
       <div className="App">
@@ -22,18 +31,24 @@ export default function App() {
         </header>
         <div> 
           <p> Log in and then submit a recipe after you're in!</p>        
-            <RecipeForm/>
         </div>
       <Switch>
         <PrivateRoute exact path="/protected" component={UserProfile} />
-        {/* below route is just for testing api call--remove after */}
-        <Route path="/userprofile" component={UserProfile} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
+        <Route path="/logout" component={Logout} />
         {/* <Route path="/logout" component={Logout} /> */}
       </Switch>
       </div>
     </Router>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {
+    loggedIn: state.loggedIn,
+  };
+};
+
+export default connect(mapStateToProps, { setLoggedIn, setLoggedOut })(App);
 

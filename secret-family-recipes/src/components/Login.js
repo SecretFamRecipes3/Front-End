@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router';
+import { connect } from 'react-redux';
+
 import * as yup from 'yup';
 import formSchema from './validation/formSchema';
-import axios from 'axios';
+import { axiosWithAuth } from '../utils/axiosWithAuth';
+import { setLoggedIn } from '../actions/index';
 
 const initialFormValues = {
   username: '',
@@ -15,12 +19,17 @@ const initialFormErrors = {
 
 const initialLogin = [];
 
-const Login = () => {
+const Login = (props) => {
   const [formValues, setFormValues] = useState(initialFormValues);
   const [savedFormInfo, setSavedFormInfo] = useState(initialLogin);
   const [errors, setErrors] = useState(initialFormErrors);
   const [disabled, setDisabled] = useState(true);
   const [post, setPost] = useState([]);
+  const history = useHistory();
+
+useEffect(() => {
+  setLoggedIn()
+}, [])
 
   const changeHandler = (evt) => {
     const { name, value } = evt.target;
@@ -30,6 +39,18 @@ const Login = () => {
 
   const submitHandler = (evt) => {
     evt.preventDefault();
+    axiosWithAuth()
+    .post('/login', `grant_type=password&username=${formValues.username}&password=${formValues.password}`)
+    .then(res => {
+      console.log(res)
+      props.setLoggedIn();
+      localStorage.setItem('token', res.data.access_token)
+      history.push('/protected');
+    })
+    .catch(err => {
+      console.log(err)
+    });
+  
 
     // axios
     //   .post('http://hsmm-secretfamilyrecipe.herokuapp.com/login', formValues)
@@ -105,4 +126,10 @@ const Login = () => {
   );
 };
 
-export default Login;
+const mapStateToProps = (state) => {
+  return {
+    loggedIn: state.loggedIn,
+  };
+};
+
+export default connect(mapStateToProps, { setLoggedIn })(Login);
