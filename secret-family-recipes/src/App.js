@@ -1,10 +1,13 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 
 import Header from './components/Header';
 import PrivateRoute from './components/PrivateRoute';
 import UserProfile from './components/UserProfile';
+// import Login form
+// import signup form
+// import logout page
 
 import './App.css';
 
@@ -18,6 +21,7 @@ function App() {
         </header>
       <Switch>
         <PrivateRoute exact path="/protected" component={UserProfile} />
+        {/* below route is just for testing api call--remove after */}
         <Route path="/userprofile" component={UserProfile} />
         {/* <Route path="/login" component={Login} /> */}
         {/* <Route path="/signup" component={Signup} /> */}

@@ -1,9 +1,24 @@
 import React from 'react';
+import { connect } from 'react-redux';
+// import action function to axios.get recipes
 
-const UserProfile = () => {
+const UserProfile = (props) => {
+
+    // this is where I'll do axios.get for recipes from back-end
+    
     return (
+    <>
         <div>
             <h1>My Recipes</h1>
+            {!props.loggedIn ? (
+                // if loggedIn, show recipes
+                <div></div>
+            ) : (
+            <div>
+                Must be logged in to view your recipes</div>
+                )}
+
+
             <div className="recipeContainer">
                 <div className="recipeCard">
                     <h3>Best Brownies</h3>
@@ -52,8 +67,15 @@ const UserProfile = () => {
                 </div>
             </div>
         </div>
+    </>
     )
 }
 
+function mapStateToProps(state) {
+    return {
+        loggedIn: state.loggedIn
+    };
+};
 
-export default UserProfile;
+
+export default connect(mapStateToProps, {})(UserProfile);
