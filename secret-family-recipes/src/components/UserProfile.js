@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 // import action function to axios.get recipes
 
+import RecipeForm from './RecipeForm';
+
 const UserProfile = (props) => {
 
     // this is where I'll do axios.get for recipes from back-end
@@ -10,6 +12,7 @@ const UserProfile = (props) => {
     <>
         <div>
             <h1>My Recipes</h1>
+                <RecipeForm/>
             {!props.loggedIn ? (
                 // if loggedIn, show recipes
                 <div></div>
