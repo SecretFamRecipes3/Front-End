@@ -12,12 +12,15 @@ import reducer from './reducers/index';
 
 import './index.css';
 import * as serviceWorker from './serviceWorker';
+import {ThemeProvider } from 'styled-components'
+import theme from './theme'
 
 const store = createStore(reducer, applyMiddleware(thunk));
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
+
       <ThemeProvider theme={theme}>
         <App />
       </ThemeProvider>

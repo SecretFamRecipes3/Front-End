@@ -30,7 +30,7 @@ const App = (props) => {
           <Header />
         </header>
         <div> 
-          <p> Log in and then submit a recipe after you're in!</p>        
+           
         </div>
       <Switch>
         <PrivateRoute exact path="/protected" component={UserProfile} />

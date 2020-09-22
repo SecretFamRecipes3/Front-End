@@ -2,19 +2,19 @@ import * as yup from 'yup'
 
 export default yup.object().shape({
 name: yup.string()
-    .required('name is required')
-    .min(3, 'recipe name must be 3 chars or longer'),
+    .required('Recipe name is required')
+    .min(3, 'Recipe name must be 3 characters or longer'),
 source: yup.string()
-    .required('source is required')
-    .min(3, 'source must be 3 chars or longer'),
+    .required('Recipe source is required')
+    .min(3, 'Recipe source must be 3 characters or longer'),
 ingredients: yup.string()
-    .required('must list atleast 2 ingredients'),
+    .required('Must list at least 2 ingredients'),
 time: yup.string()
-    .required('time is required')
-    .min(3, 'time must 3 chars or longer'),
+    .required('Prep + Cooking time is required')
+    .min(3, 'Prep + Cooking time must 3 characters or longer'),
 instructions: yup.string()
-    .required('instructions are required')
-    .min(3, 'instructions must be 3 chars or longer'),
+    .required('Cooking instructions are required')
+    .min(3, 'Cooking instructions must be 3 chars or longer'),
   
     breakfast: yup.boolean(),
     dinner: yup.boolean(),
