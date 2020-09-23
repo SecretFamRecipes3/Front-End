@@ -1,74 +1,48 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-// import action function to axios.get recipes
+import { axiosWithAuth } from '../utils/axiosWithAuth';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import RecipeForm from './RecipeForm';
+import RecipeCard from './RecipeCard';
 
 const UserProfile = (props) => {
+    const [ userRecipes, setUserRecipes ] = useState([])
 
-    // this is where I'll do axios.get for recipes from back-end
+    //this is calling for recipes from back-end
+    useEffect(() => {
+        axiosWithAuth()
+        .get('/recipes/recipes')
+        .then(res => {
+            // console.log(res)
+            setUserRecipes(res.data)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }, [])
+ 
     
     return (
     <>
         <div>
             <h1>My Recipes</h1>
+            <p className='title'>Keep track of your family's favorites...</p>
+
+                <div className="recipeContainer">
+                {userRecipes.map((recipe) => {
+                   return (<RecipeCard 
+                        key={recipe.recipeid}
+                        title={recipe.title}
+                        source={recipe.source}
+                        instruction={recipe.instruction}
+                        recipe={recipe}
+                        userRecipes={userRecipes}
+                        setUserRecipes={setUserRecipes}
+                    />)
+                    })}
+                </div>
                 <RecipeForm/>
-            {!props.loggedIn ? (
-                // if loggedIn, show recipes
-                <div></div>
-            ) : (
-            <div>
-                Must be logged in to view your recipes</div>
-                )}
-
-
-            <div className="recipeContainer">
-                <div className="recipeCard">
-                    <h3>Best Brownies</h3>
-                    <h4>Ingredients</h4>
-                    <ul>
-                        <li>butter</li>
-                        <li>sugar</li>
-                        <li>eggs</li>
-                    </ul>
-                    <h4>Directions</h4>
-                    <ol>
-                        <li>Preheat oven to 350 degrees.</li>
-                        <li>Mix dry ingredients.</li>
-                        <li>Bake for 25-30 minutes.</li>
-                    </ol>
-                </div>
-                <div className="recipeCard">
-                    <h3>Best Brownies</h3>
-                    <h4>Ingredients</h4>
-                    <ul>
-                        <li>butter</li>
-                        <li>sugar</li>
-                        <li>eggs</li>
-                    </ul>
-                    <h4>Directions</h4>
-                    <ol>
-                        <li>Preheat oven to 350 degrees.</li>
-                        <li>Mix dry ingredients.</li>
-                        <li>Bake for 25-30 minutes.</li>
-                    </ol>
-                </div>
-                <div className="recipeCard">
-                    <h3>Best Brownies</h3>
-                    <h4>Ingredients</h4>
-                    <ul>
-                        <li>butter</li>
-                        <li>sugar</li>
-                        <li>eggs</li>
-                    </ul>
-                    <h4>Directions</h4>
-                    <ol>
-                        <li>Preheat oven to 350 degrees.</li>
-                        <li>Mix dry ingredients.</li>
-                        <li>Bake for 25-30 minutes.</li>
-                    </ol>
-                </div>
-            </div>
         </div>
     </>
     )

@@ -1,22 +1,67 @@
 import React, { useState, useEffect } from 'react';
 import * as yup from 'yup';
 import formSchema from './validation/formSchema';
+import styled from 'styled-components';
 
-import { axiosWithAuth } from '../utils/axiosWithAuth';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { setLoggedIn, setLoggedOut } from '../actions/index';
 import { connect } from 'react-redux';
+import axios from 'axios';
+
+//styled-components
+
+const StyledForm = styled.form`
+  background-color: ${(pr) => pr.theme.main};
+  padding: ${(pr) => pr.theme.paddingSmall};
+  margin: ${(pr) => pr.theme.marginSmall};
+  border: ${(pr) => pr.theme.regBorder};
+  border-radius: 10px;
+  display: flex;
+  width: 50%;
+  margin: 0 auto;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 5%;
+`;
+
+const StyledFormInputs = styled.input`
+  margin-bottom: ${(pr) => pr.theme.marginSmall};
+  margin-left: 10px;
+
+  height: 40px;
+  background-color: #bee3db;
+  border: none;
+  border-bottom: 2.5px solid white;
+  ::placeholder {
+    margin-bottom: 20px;
+    position: relative;
+    top: -10px;
+    padding-left: 10px;
+  }
+`;
+
+const Button = styled.button`
+  height: 50px;
+  border-radius: 30px;
+  width: 50%;
+`;
+
+const Errors = styled.div`
+  color: ${(pr) => pr.theme.white};
+`;
 
 const initialFormValues = {
-  username: '',
-  password: '',
-  email: '',
+    username: '',
+    email: '',
+    password: '',
 };
 
 const initialFormErrors = {
   username: '',
-  password: '',
   email: '',
+  password: '',
 };
 
 const initialSignup = [];
@@ -36,24 +81,33 @@ const Signup = (props) => {
 
   const submitHandler = (evt) => {
     evt.preventDefault();
-    axiosWithAuth()
-    .post('/createnewuser', formValues)
+    axios
+    .post('http://hsmm-secretfamilyrecipe.herokuapp.com/createnewuser', formValues)
     .then(res => {
-      console.log(res)
+      // console.log(res)
+      // props.setLoggedIn();
+      localStorage.setItem('token', res.data.access_token);
+      history.push('/userprofile');
     })
     .catch(err => {
       console.log(err)
     })
 
-    // axios
-    //   .post('http://hsmm-secretfamilyrecipe.herokuapp.com/createnewuser', formValues)
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     setPost(res.data);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    // axios.post('http://hsmm-secretfamilyrecipe.herokuapp.com/createnewuser', `grant_type=password&username=${formValues.username}&password=${formValues.password}`, {
+    //   headers: {
+    //     // btoa is converting our client id/client secret into base64
+    //     Authorization: `Basic ${btoa('lambda-client:lambda-secret')}`,
+    //     'Content-Type': 'application/x-www-form-urlencoded'
+    //   }
+    // })
+    // .then(res => {
+    //   props.setLoggedIn();
+    //   localStorage.setItem('token', res.data.access_token)
+    //   history.push('/userprofile');
+    // })
+    //   .catch(err => {
+    //   console.log(err)
+    // });
 
     const newSignup = {
       username: formValues.username.trim(),
@@ -83,54 +137,55 @@ const Signup = (props) => {
   }, [formValues]);
 
   return (
-    <form className="form-container" onSubmit={submitHandler}>
-      <h2>Sign Up</h2>
-      <div className="errors">
+    <StyledForm className="form-container" onSubmit={submitHandler}>
+      <h2>
+        Sign Up for <br />
+        Secret Family Recipes
+      </h2>
+      <Errors className="errors">
         <div>{errors.username}</div>
         <div>{errors.password}</div>
         <div>{errors.email}</div>
-      </div>
+      </Errors>
       <div className="form-inputs">
         <label>
-          Username&nbsp;
-          <input
+          <StyledFormInputs
             name="username"
             type="text"
+            style={{ width: '350px' }}
             value={formValues.username}
-            onChange={changeHandler}
+            onChange={(e) => changeHandler(e)}
             placeholder="username"
-          ></input>
+          ></StyledFormInputs>
         </label>
 
         <br />
 
         <label>
-          Password&nbsp;
-          <input
+          <StyledFormInputs
             name="password"
             type="password"
+            style={{ width: '350px' }}
             value={formValues.password}
             onChange={changeHandler}
             placeholder="password"
-          ></input>
+          ></StyledFormInputs>
         </label>
       </div>
 
       <label>
-        Email&nbsp;
-        <input
+        <StyledFormInputs
           name="email"
           type="email"
+          style={{ width: '350px' }}
           value={formValues.email}
           onChange={changeHandler}
           placeholder="email"
-        ></input>
+        ></StyledFormInputs>
       </label>
-      <br />
-      <br />
 
-      <button disabled={disabled}>Login</button>
-    </form>
+      <Button disabled={disabled}>Sign Up</Button>
+    </StyledForm>
   );
 };
 

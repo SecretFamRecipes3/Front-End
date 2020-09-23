@@ -23,7 +23,7 @@ function Header(props) {
         {props.loggedIn && (
             <div className="navLinks">
                 <Link to="/logout">Log Out</Link><br/>
-                <Link to="/protected">My Recipes</Link>
+                <Link to="/userprofile">My Recipes</Link>
             </div>
         )}
     </>

@@ -4,8 +4,8 @@ export const initialState = {
     loggedIn: false,
     user: {
         username: " ",
+        email: " ",
         password: " ",
-        email: " "
     }
 };
 
@@ -15,6 +15,7 @@ export default (state = initialState, action) => {
         return {
             ...state,
             loggedIn: true,
+            user: {...state.user}
         };
         case SET_LOGGED_OUT:
             return {
@@ -25,7 +26,7 @@ export default (state = initialState, action) => {
         return {
             ...state,
             loggedIn: true,
-            user: action.payload
+            user: {...state.user}
         }
         case USER_LOGOUT: 
         return {
