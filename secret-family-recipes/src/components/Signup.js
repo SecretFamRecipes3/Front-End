@@ -3,10 +3,10 @@ import * as yup from 'yup';
 import formSchema from './validation/formSchema';
 import styled from 'styled-components';
 
-import { axiosWithAuth } from '../utils/axiosWithAuth';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { setLoggedIn, setLoggedOut } from '../actions/index';
 import { connect } from 'react-redux';
+import axios from 'axios';
 
 //styled-components
 
@@ -53,15 +53,15 @@ const Errors = styled.div`
 `;
 
 const initialFormValues = {
-  username: '',
-  password: '',
-  email: '',
+    username: '',
+    email: '',
+    password: '',
 };
 
 const initialFormErrors = {
   username: '',
-  password: '',
   email: '',
+  password: '',
 };
 
 const initialSignup = [];
@@ -81,24 +81,33 @@ const Signup = (props) => {
 
   const submitHandler = (evt) => {
     evt.preventDefault();
-    axiosWithAuth()
-      .post('/createnewuser', formValues)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    axios
+    .post('http://hsmm-secretfamilyrecipe.herokuapp.com/createnewuser', formValues)
+    .then(res => {
+      // console.log(res)
+      // props.setLoggedIn();
+      localStorage.setItem('token', res.data.access_token);
+      history.push('/userprofile');
+    })
+    .catch(err => {
+      console.log(err)
+    })
 
-    // axios
-    //   .post('http://hsmm-secretfamilyrecipe.herokuapp.com/createnewuser', formValues)
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     setPost(res.data);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    // axios.post('http://hsmm-secretfamilyrecipe.herokuapp.com/createnewuser', `grant_type=password&username=${formValues.username}&password=${formValues.password}`, {
+    //   headers: {
+    //     // btoa is converting our client id/client secret into base64
+    //     Authorization: `Basic ${btoa('lambda-client:lambda-secret')}`,
+    //     'Content-Type': 'application/x-www-form-urlencoded'
+    //   }
+    // })
+    // .then(res => {
+    //   props.setLoggedIn();
+    //   localStorage.setItem('token', res.data.access_token)
+    //   history.push('/userprofile');
+    // })
+    //   .catch(err => {
+    //   console.log(err)
+    // });
 
     const newSignup = {
       username: formValues.username.trim(),
@@ -145,7 +154,7 @@ const Signup = (props) => {
             type="text"
             style={{ width: '350px' }}
             value={formValues.username}
-            onChange={changeHandler}
+            onChange={(e) => changeHandler(e)}
             placeholder="username"
           ></StyledFormInputs>
         </label>

@@ -10,6 +10,7 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import Logout from './components/Logout';
 import { connect } from 'react-redux';
+import UpdateRecipe from './components/UpdateRecipe';
 
 import './App.css';
 
@@ -21,7 +22,7 @@ const App = (props) => {
     } else {
       props.setLoggedOut();
     }
-  }, [])
+  }, [props])
 
   return (
     <Router>
@@ -33,11 +34,13 @@ const App = (props) => {
            
         </div>
       <Switch>
-        <PrivateRoute exact path="/protected" component={UserProfile} />
+        <PrivateRoute exact path="/userprofile" component={UserProfile} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         <Route path="/logout" component={Logout} />
-        {/* <Route path="/logout" component={Logout} /> */}
+        <Route path="/update-recipe/:id">
+          <UpdateRecipe />
+        </Route>
       </Switch>
       </div>
     </Router>
