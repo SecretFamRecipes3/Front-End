@@ -93,22 +93,6 @@ const Signup = (props) => {
       console.log(err)
     })
 
-    // axios.post('http://hsmm-secretfamilyrecipe.herokuapp.com/createnewuser', `grant_type=password&username=${formValues.username}&password=${formValues.password}`, {
-    //   headers: {
-    //     // btoa is converting our client id/client secret into base64
-    //     Authorization: `Basic ${btoa('lambda-client:lambda-secret')}`,
-    //     'Content-Type': 'application/x-www-form-urlencoded'
-    //   }
-    // })
-    // .then(res => {
-    //   props.setLoggedIn();
-    //   localStorage.setItem('token', res.data.access_token)
-    //   history.push('/userprofile');
-    // })
-    //   .catch(err => {
-    //   console.log(err)
-    // });
-
     const newSignup = {
       username: formValues.username.trim(),
       password: formValues.password.trim(),

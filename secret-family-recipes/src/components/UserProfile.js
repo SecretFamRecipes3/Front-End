@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { axiosWithAuth } from '../utils/axiosWithAuth';
+import axios from 'axios';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { addRecipe } from '../actions/recipeActions';
 
 import RecipeForm from './RecipeForm';
 import RecipeCard from './RecipeCard';
@@ -11,10 +12,10 @@ const UserProfile = (props) => {
 
     //this is calling for recipes from back-end
     useEffect(() => {
-        axiosWithAuth()
-        .get('/recipes/recipes')
+        axios
+        .get('http://hsmm-secretfamilyrecipe.herokuapp.com/recipes/recipes')
         .then(res => {
-            // console.log(res)
+            console.log("the response from back", res)
             setUserRecipes(res.data)
         })
         .catch(err => {
@@ -33,26 +34,16 @@ const UserProfile = (props) => {
                 {userRecipes.map((recipe) => {
                    return (<RecipeCard 
                         key={recipe.recipeid}
-                        title={recipe.title}
-                        source={recipe.source}
-                        instruction={recipe.instruction}
                         recipe={recipe}
                         userRecipes={userRecipes}
                         setUserRecipes={setUserRecipes}
                     />)
                     })}
                 </div>
-                <RecipeForm/>
+                <RecipeForm />
         </div>
     </>
     )
 }
 
-function mapStateToProps(state) {
-    return {
-        loggedIn: state.loggedIn
-    };
-};
-
-
-export default connect(mapStateToProps, {})(UserProfile);
+export default UserProfile;
