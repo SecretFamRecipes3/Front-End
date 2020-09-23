@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import formSchema from './validation/formSchema';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 import { setLoggedIn } from '../actions/index';
+import axios from 'axios';
 
 const initialFormValues = {
   username: '',
@@ -24,7 +25,7 @@ const Login = (props) => {
   const [savedFormInfo, setSavedFormInfo] = useState(initialLogin);
   const [errors, setErrors] = useState(initialFormErrors);
   const [disabled, setDisabled] = useState(true);
-  const [post, setPost] = useState([]);
+  // const [post, setPost] = useState([]);
   const history = useHistory();
 
 useEffect(() => {
@@ -39,17 +40,35 @@ useEffect(() => {
 
   const submitHandler = (evt) => {
     evt.preventDefault();
-    axiosWithAuth()
-    .post('/login', `grant_type=password&username=${formValues.username}&password=${formValues.password}`)
+    axios.post('http://hsmm-secretfamilyrecipe.herokuapp.com/login', `grant_type=password&username=${formValues.username}&password=${formValues.password}`, {
+      headers: {
+        // btoa is converting our client id/client secret into base64
+        Authorization: `Basic ${btoa('lambda-client:lambda-secret')}`,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    }
+    )
     .then(res => {
-      console.log(res)
       props.setLoggedIn();
       localStorage.setItem('token', res.data.access_token)
-      history.push('/protected');
+      history.push('/userprofile');
     })
-    .catch(err => {
+      .catch(err => {
       console.log(err)
     });
+    
+  
+    // axios
+    // .post('/login', `grant_type=password&username=${formValues.username}&password=${formValues.password}`)
+    // .then(res => {
+    //   console.log(res)
+    //   props.setLoggedIn();
+    //   localStorage.setItem('token', res.data.access_token)
+    //   history.push('/userprofile');
+    // })
+    // .catch(err => {
+    //   console.log(err)
+    // });
   
 
     // axios

@@ -1,10 +1,13 @@
 
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import * as yup from 'yup'
 import schema from './validation/formSchemaRecipes'
 import Recipe from './Recipe'
+import Ingredient from './Ingredient';
 
+import { axiosWithAuth } from '../utils/axiosWithAuth';
+
+const defaultIngredientObj = { ingredient : { ingredientid: "", name: "", amount: "" } }
 
 const initialRecipeFormValues = {
     ///// TEXT INPUTS /////
@@ -12,7 +15,7 @@ const initialRecipeFormValues = {
     source: '',
     time: '',
     instructions: '',
-    ingredients: '',
+    ingredients: [defaultIngredientObj],
     ///// CHECKBOXES /////
     Breakfast: false,
     Dinner: false,
@@ -30,14 +33,11 @@ const initialRecipeFormValues = {
     source: '',
     time: '',
     instructions: '',
-    ingredients: '',
+    ingredients: [],
     }
     
     const initialRecipes = []
     const initialRecipeDisabled = true
-
-
-
 
 export default function RecipeForm (props) {
 
@@ -47,6 +47,17 @@ export default function RecipeForm (props) {
       const [formRecipeErrors, setFormRecipeErrors] = useState(initialRecipeFormErrors) 
       const [disabledRecipe, setDisabledRecipe] = useState(initialRecipeDisabled)   
     
+// Posting new recipe to backend
+    //   useEffect(() => {
+    //     axiosWithAuth()
+    //     .post('/recipes/recipe', formRecipeValues)
+    //     .then(res => {
+    //         console.log('recipeForm response', res)
+    //     })
+    //     .catch(err => {
+    //         console.log(err)
+    //     })
+    // }, [])
     
     //   const getRecipes = () => {
     //     axios.get('')
@@ -100,11 +111,20 @@ export default function RecipeForm (props) {
     
     const formSubmit = (event) => {
         event.preventDefault()
+        axiosWithAuth()
+          .post('/recipes/recipe', formRecipeValues)
+          .then(res => {
+              console.log('recipeForm response', res)
+          })
+          .catch(err => {
+              console.log(err)
+          })
+
       const newRecipe = {
         name: formRecipeValues.name.trim(),
         source: formRecipeValues.source.trim(),
         length_of_time: formRecipeValues.time.trim(),
-        ingredients: formRecipeValues.ingredients.trim(),
+        ingredients: formRecipeValues.ingredients,
         instructions: formRecipeValues.instructions.trim(),
         category: ['breakfast', 'dinner', 'chicken','beef','pork','fish','vegetables', 'soup', 'dessert'].filter(cat => formRecipeValues[cat]),
       }
@@ -129,7 +149,6 @@ export default function RecipeForm (props) {
         inputChange(name, valueToUse)
       }
    
-
 
         return (
             <form className='form container' onSubmit={formSubmit}>
@@ -183,6 +202,26 @@ export default function RecipeForm (props) {
                             type='text'
                         />
                         </label>
+                        {/* <label>Ingredients&nbsp;
+                          {formRecipeValues.ingredients.map((item, index) => {
+                            console.log(item)
+                            return (
+                              <input
+                                item={item}
+                                key={index}
+                                index={index}
+                                onChange={onChange}
+                              />
+                            );
+                          })}
+                        <input
+                            value={formRecipeValues.ingredients}
+                            onChange={onChange}
+                            name='ingredients'
+                            type='text'
+                        />
+
+                        </label> */}
                         <br/>
                 <label>Recipe Instructions&nbsp;
                         <input

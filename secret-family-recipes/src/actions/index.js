@@ -1,3 +1,4 @@
+import { bindActionCreators } from "redux";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 
 export const SET_LOGGED_IN = "SET_LOGGED_IN";
@@ -11,9 +12,10 @@ export const setLoggedIn = () => {
         axiosWithAuth()
         .get('/users/user/{id}')
         .then(res => {
-            console.log(res)
+            // console.log(res)
             dispatch({
-                type: USER_SUCCESS
+                type: SET_LOGGED_IN,
+                payload: res.data
             })
         })
         .catch(err => {
@@ -38,3 +40,17 @@ export const setLoggedOut = () => {
         })
     }
 };
+
+// export const userSuccess = (user) => {
+//     return(dispatch) => {
+//         dispatch({ type: USER_SUCCESS });
+//         axiosWithAuth()
+//         .post('/createnewuser', user)
+//         .then(res => {
+//             console.log(res)
+//         })
+//         .catch(err => {
+//             console.log(err)
+//         })
+//     }
+// }

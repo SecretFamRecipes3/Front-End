@@ -1,16 +1,15 @@
 import React, { useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+// import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { setLoggedOut } from '../actions/index';
 
 const Logout = (props) => {
-    const history = useHistory();
+    // const history = useHistory();
 
     useEffect(() => {
         localStorage.removeItem('token');
-        props.setLoggedOut();
-        
-    }, [])
+        // props.setLoggedOut();
+    }, [props])
 
 
     return (
@@ -20,7 +19,7 @@ const Logout = (props) => {
         </div>
     </>
     )
-}
+};
 
 const mapStateToProps = (state) => {
     return {
