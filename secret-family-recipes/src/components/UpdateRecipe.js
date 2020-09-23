@@ -3,24 +3,24 @@ import { useHistory, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 
-// const defaultIngredientObj = { ingredient : { ingredientid: "", name: "", amount: "" } }
+const defaultIngredientObj = { ingredient : { ingredientid: "", name: "", amount: "" } }
 const initialRecipeDetails = {
     ///// TEXT INPUTS /////
-    name: '',
+    title: '',
     source: '',
-    time: '',
-    instructions: '',
+    // time: '',
     ingredients: [],
+    instruction: '',
     ///// CHECKBOXES /////
-    Breakfast: false,
-    Dinner: false,
-    Chicken: false,
-    Pork: false,
-    Fish: false,
-    Beef: false,
-    Vegetables: false,
-    Soup: false,
-    Dessert: false,
+    // Breakfast: false,
+    // Dinner: false,
+    // Chicken: false,
+    // Pork: false,
+    // Fish: false,
+    // Beef: false,
+    // Vegetables: false,
+    // Soup: false,
+    // Dessert: false,
     }
 
 const UpdateRecipe = (props) => {
@@ -48,11 +48,12 @@ const UpdateRecipe = (props) => {
         })
     }
 
+    // should be re-populating the edit form with the recipe info of the id requested
     useEffect(() => {
         axios
         .get(`http://hsmm-secretfamilyrecipe.herokuapp.com/recipes/recipe/${id}`)
         .then(res => {
-            console.log('get call for recipe', res)
+            console.log('call for recipe via id', res)
             // setRecipeDetails(res.data)
         })
         .catch(err => {
@@ -66,11 +67,11 @@ const UpdateRecipe = (props) => {
             
         <div className='form-recipe inputs'>       
     
-             <label>Recipe Name&nbsp;
+             <label>Recipe Title&nbsp;
                     <input
-                        value={recipeDetails.name}
+                        value={recipeDetails.title}
                         onChange={inputChange}
-                        name='name'
+                        name='title'
                         type='text'
                     />
                     </label>
@@ -84,16 +85,16 @@ const UpdateRecipe = (props) => {
                     />
                     </label>
                     <br/>
-            <label>Time it takes&nbsp;
+            {/* <label>Time it takes&nbsp;
                     <input
                         value={recipeDetails.time}
                         onChange={inputChange}
                         name='time'
                         type='text'
                     />
-                    </label>
+                    </label> */}
                     <br/>
-            <label>What goes in it&nbsp;
+            <label>Ingredients&nbsp;
                     <input
                         value={recipeDetails.ingredients}
                         onChange={inputChange}
@@ -104,7 +105,7 @@ const UpdateRecipe = (props) => {
                     <br/>
             <label>Recipe Instructions&nbsp;
                     <input
-                        value={recipeDetails.instructions}
+                        value={recipeDetails.instruction}
                         onChange={inputChange}
                         name='instructions'
                         type='text'
@@ -113,7 +114,7 @@ const UpdateRecipe = (props) => {
                     <br/>
                   
             {/* ////////// CHECKBOXES ////////// */}
-        <div className='form-group checkboxes'>
+        {/* <div className='form-group checkboxes'>
             <h4>Recipe Category:</h4>
             <label>Breakfast&nbsp;
             <input
@@ -196,8 +197,9 @@ const UpdateRecipe = (props) => {
             />&nbsp;
             </label> 
             <button>Update</button>   
-        </div>
+        </div> */}
     </div>
+    <button>Submit</button>
   </form>
   </div>
     )

@@ -9,7 +9,7 @@ export const initialState = {
     }
 };
 
-export default (state = initialState, action) => {
+export const accountReducer = (state = initialState, action) => {
     switch(action.type) {
         case SET_LOGGED_IN: 
         return {
