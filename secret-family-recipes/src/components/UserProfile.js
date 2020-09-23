@@ -5,7 +5,6 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import RecipeForm from './RecipeForm';
 import RecipeCard from './RecipeCard';
-import UpdateRecipe from './UpdateRecipe';
 
 const UserProfile = (props) => {
     const [ userRecipes, setUserRecipes ] = useState([])

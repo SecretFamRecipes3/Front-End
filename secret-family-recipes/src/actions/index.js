@@ -1,4 +1,3 @@
-import { bindActionCreators } from "redux";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 
 export const SET_LOGGED_IN = "SET_LOGGED_IN";

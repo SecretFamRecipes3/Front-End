@@ -4,11 +4,56 @@ import * as yup from 'yup'
 import schema from './validation/formSchemaRecipes'
 import Recipe from './Recipe'
 import Ingredient from './Ingredient';
+import styled from 'styled-components'
 
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 const defaultIngredientObj = { ingredient : { ingredientid: "", name: "", amount: "" } }
 
+
+const StyledRecipe = styled.div `
+ border: 5px solid #89B0AE;
+ width: 40%;
+ margin: 0 auto;
+ padding-left: 4%;  
+ background-color:#FAF9F9;
+ /* font-family:'@import url('https://fonts.googleapis.com/css2?family=Noto+Serif&display=swap')'; */
+ 
+h2{
+  color:#555B6E;
+}
+
+label{
+  display:flex;
+  color:#555B6E;
+ }
+
+h4{
+margin: 0 auto;
+padding-bottom:1%;
+}
+.form-group-checkboxes{
+  columns:3;
+ }  
+
+.submitBtn{
+  margin-left:35%;
+  margin-top:2%;
+  margin-bottom:2%;
+ }
+
+ textarea{
+  font-family:'arial' }
+
+  .errors{
+    color:red;
+  }
+
+
+  @media ${pr => pr.theme.mobileBreakpoint} {
+    width: initial;
+  }
+`
 const initialRecipeFormValues = {
     ///// TEXT INPUTS /////
     name: '',
@@ -38,6 +83,7 @@ const initialRecipeFormValues = {
     
     const initialRecipes = []
     const initialRecipeDisabled = true
+    const initialIngredientList= []
 
 export default function RecipeForm (props) {
 
@@ -45,7 +91,8 @@ export default function RecipeForm (props) {
       const [recipes, setRecipes] = useState(initialRecipes)        
       const [formRecipeValues, setFormRecipeValues] = useState(initialRecipeFormValues) 
       const [formRecipeErrors, setFormRecipeErrors] = useState(initialRecipeFormErrors) 
-      const [disabledRecipe, setDisabledRecipe] = useState(initialRecipeDisabled)   
+      const [disabledRecipe, setDisabledRecipe] = useState(initialRecipeDisabled)  
+      const [ingredient, setIngredient] = useState(initialIngredientList)
     
 // Posting new recipe to backend
     //   useEffect(() => {
@@ -149,12 +196,22 @@ export default function RecipeForm (props) {
         inputChange(name, valueToUse)
       }
    
+      const onClick =evt =>{
+        //setIngreident(evt.target.value)
+        const { name, value} = evt.target
+        setIngredient({
+          ...ingredient,
+          [name]: value 
+        })
+        setIngredient(initialIngredientList)
+      }
 
         return (
+          <StyledRecipe>
             <form className='form container' onSubmit={formSubmit}>
-           
+            <h2>Keep track of your family's favorites!</h2>
             <div className='recipeInput'>
-                 <p className='title'>Keep track of your family's favorites...</p>
+              
 
                 <div className='errors'>
                 {/* 🔥 RENDER THE VALIDATION ERRORS HERE */}
@@ -185,22 +242,25 @@ export default function RecipeForm (props) {
                         />
                         </label>
                         <br/>
-                <label>Time it takes&nbsp;
-                        <input
+                <label>Prep + Cook Time&nbsp;
+                        <textarea 
                             value={formRecipeValues.time}
                             onChange={onChange}
                             name='time'
                             type='text'
+                            placeholder='prep:30min total time:2hr'
                         />
                         </label>
                         <br/>
-                <label>What goes in it&nbsp;
+                        
+                <label>Ingredients&nbsp;
                         <input
                             value={formRecipeValues.ingredients}
                             onChange={onChange}
                             name='ingredients'
                             type='text'
-                        />
+                        /> <button onClick={onClick}>+</button>
+                        
                         </label>
                         {/* <label>Ingredients&nbsp;
                           {formRecipeValues.ingredients.map((item, index) => {
@@ -222,9 +282,10 @@ export default function RecipeForm (props) {
                         />
 
                         </label> */}
+                      
                         <br/>
-                <label>Recipe Instructions&nbsp;
-                        <input
+                <label>Instructions&nbsp;
+                        <textarea rows = "10" cols ="30"
                             value={formRecipeValues.instructions}
                             onChange={onChange}
                             name='instructions'
@@ -232,11 +293,11 @@ export default function RecipeForm (props) {
                         />
                         </label>
                         <br/>
-                      
+                        <h4>Recipe Category:</h4>   
                 {/* ////////// CHECKBOXES ////////// */}
-                <div className='form-group checkboxes'>
-                <h4>Recipe Category:</h4>
-                <label>Breakfast&nbsp;
+                <div className='form-group-checkboxes'>
+                
+                <label className='checkbox'>Breakfast&nbsp;
                 <input
                     type="checkbox"
                     name="breakfast"
@@ -245,7 +306,7 @@ export default function RecipeForm (props) {
                 />&nbsp;
                 </label>
 
-                <label>Dinner&nbsp;
+                <label className='checkbox'>Dinner&nbsp;
                 <input
                     type="checkbox"
                     name='dinner'
@@ -254,7 +315,7 @@ export default function RecipeForm (props) {
                 />&nbsp;
                 </label>
 
-                <label>Chicken Dish&nbsp;
+                <label className='checkbox'>Chicken Dish&nbsp;
                 <input
                     type="checkbox"
                     name="chicken"
@@ -263,7 +324,7 @@ export default function RecipeForm (props) {
                 />&nbsp;
                 </label>  
 
-                <label>Beef Dish&nbsp;
+                <label className='checkbox'>Beef Dish&nbsp;
                 <input
                     type="checkbox"
                     name="beef"
@@ -272,7 +333,7 @@ export default function RecipeForm (props) {
                 />&nbsp;
                 </label>   
                 
-                <label>Pork Dish&nbsp;
+                <label className='checkbox'>Pork Dish&nbsp;
                 <input
                     type="checkbox"
                     name="pork"
@@ -280,8 +341,8 @@ export default function RecipeForm (props) {
                     onChange={onChange}
                 />&nbsp;
                 </label>   
-                <br/>
-                 <label>Fish Dish&nbsp;
+               
+                 <label className='checkbox'>Fish Dish&nbsp;
                 <input
                     type="checkbox"
                     name="fish"
@@ -290,7 +351,7 @@ export default function RecipeForm (props) {
                 />&nbsp;
                 </label>  
 
-                <label>Vegetables&nbsp;
+                <label className='checkbox'>Vegetables&nbsp;
                 <input
                     type="checkbox"
                     name="vegetables"
@@ -299,7 +360,7 @@ export default function RecipeForm (props) {
                 />&nbsp;
                 </label>  
 
-                <label>Soup&nbsp;
+                <label className='checkbox'>Soup&nbsp;
                 <input
                     type="checkbox"
                     name="soup"
@@ -308,7 +369,7 @@ export default function RecipeForm (props) {
                 />&nbsp;
                 </label>  
 
-                <label>Dessert&nbsp;
+                <label className='checkbox'>Dessert&nbsp;
                 <input
                     type="checkbox"
                     name="dessert"
@@ -316,8 +377,8 @@ export default function RecipeForm (props) {
                     onChange={onChange}
                 />&nbsp;
                 </label> 
-
-                <button disabled={disabledRecipe}>submit</button>   
+                </div>
+                <button className='submitBtn' disabled={disabledRecipe}>submit</button>   
 
             {recipes.map(details => {
           return (
@@ -326,10 +387,11 @@ export default function RecipeForm (props) {
             })}
             
             
-            </div>
+            
             </div>
             </div>
       </form>
+   </StyledRecipe>
         )
         }
 

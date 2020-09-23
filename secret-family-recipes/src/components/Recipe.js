@@ -24,11 +24,6 @@ export default function Recipe({ details }) {
 
 
 
-
-
-
-
-
   return (
     <div className='recipes'>
       <h2>{details.name}</h2>

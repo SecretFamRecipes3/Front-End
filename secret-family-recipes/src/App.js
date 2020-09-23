@@ -30,9 +30,9 @@ const App = (props) => {
         <header className="App-header">
           <Header />
         </header>
-        {/* <div> 
-          <p> Log in and then submit a recipe after you're in!</p>        
-        </div> */}
+        <div> 
+           
+        </div>
       <Switch>
         <PrivateRoute exact path="/userprofile" component={UserProfile} />
         <Route path="/login" component={Login} />
