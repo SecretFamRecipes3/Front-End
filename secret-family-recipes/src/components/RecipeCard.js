@@ -1,24 +1,18 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
-
+import { deleteRecipe } from '../actions/index';
+import { connect } from 'react-redux';
+ 
 const RecipeCard = (props) => {
-    const { recipe } = props;
+    const { recipe, deleteRecipe } = props;
     const history = useHistory();
 
-    // DELETE FUNCTION works when userRecipes is inside dependency array in UserProfile useEffect
-    // doesn't work when the dependency array is empty
-    // const handleDelete = evt => {
-    //     evt.preventDefault();
-    //     axiosWithAuth()
-    //     .delete(`http://hsmm-secretfamilyrecipe.herokuapp.com/recipes/recipe/${recipe.recipeid}`)
-    //     .then(res => {
-    //         // setUserRecipes(userRecipes); use .filter to filter out id's 
-    //     })
-    //     .catch(err => {
-    //         console.log(err)
-    //     });
-    // };
+    // DELETE FUNCTION
+    const handleDelete = evt => {
+        evt.preventDefault();
+        deleteRecipe(evt.target.id);
+    };
 
     return (
         <>
@@ -30,7 +24,7 @@ const RecipeCard = (props) => {
                     <p style={{fontWeight:"bold"}}>Ingredients</p>
                         {recipe.ingredients.map((item) => {
                             return (
-                                <div key={item.ingredient.ingredientid}>{item.ingredient.name} {item.ingredient.amount}</div>
+                                <div key={item.ingredient.ingredientid}>{item.ingredient.amount} {item.ingredient.name}</div>
                             )
                         })}
                 </div>
@@ -43,11 +37,16 @@ const RecipeCard = (props) => {
                             )
                         })}
                 <button onClick={() => history.push(`/update-recipe/${recipe.recipeid}`)}>Edit</button>
-                {/* <button onClick={handleDelete}>Delete</button> */}
+                <button id={recipe.recipeid} onClick={handleDelete}>Delete</button>
             </div>
         </>
     )
 }
 
+function mapStateToProps(state) {
+    return {
 
-export default RecipeCard;
+    }
+}
+
+export default connect(mapStateToProps, { deleteRecipe })(RecipeCard);

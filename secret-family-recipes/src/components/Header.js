@@ -10,6 +10,7 @@ function Header(props) {
                         <Link to="/login">Login</Link>
                         <Link to="/signup">SignUp</Link>
                         <Link to="/userprofile">My Recipes</Link>
+                        <Link to="/allrecipes">All Recipes</Link>
             </div>
         )}
         {props.loggedIn && (
