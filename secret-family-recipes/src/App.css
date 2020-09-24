@@ -3,24 +3,26 @@
 } */
 
 .App-header {
-  background-color: #89B0AE;
-  min-height: 15vh;
+  background-color: #89b0ae;
+  min-height: 8vh;
   display: flex;
   flex-direction: row;
-  align-items: flex-end;
-  justify-content: space-around;
+  align-items: center;
+  justify-content: flex-end;
   font-size: calc(10px + 2vmin);
   color: white;
- 
 }
 
-.navLinks{
-  width: 80%;
+.title {
+  margin-right: 37%;
+}
+
+.navLinks {
+  width: 40%;
   display: flex;
   justify-content: space-between;
+  margin-right: 2%;
 }
-
-
 
 .recipeContainer {
   display: flex;
@@ -31,10 +33,8 @@
 .recipeCard {
   border: 2px solid black;
   margin: 2%;
-
 }
 
 .instruction {
   line-height: 1.5;
 }
-
