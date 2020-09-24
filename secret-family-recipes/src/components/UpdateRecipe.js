@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useParams, useHistory } from 'react-router-dom';
 
 import { axiosWithAuth } from '../utils/axiosWithAuth';
+import { putRecipe } from '../actions/index';
+import { connect } from 'react-redux';
 
 const initialRecipeFormValues = {
         ///// TEXT INPUTS /////
+        // recipeid: '',
         title: '',
         source: '',
         preptime: '',
@@ -15,24 +17,55 @@ const initialRecipeFormValues = {
     }
     
 const ingredientsObj = {
-        ingredientid: 42,
+        // ingredientid: 42,
         name: '',
         amount: '',
     }
     
 const categoriesObj = {
-      categoryid: 56,
+    //   categoryid: 56,
       categoryname: '',
     }
 
 const UpdateRecipe = (props) => {
     const [ recipeDetails, setRecipeDetails ] = useState(initialRecipeFormValues)
     const [ ingredients, setIngredients ] = useState(ingredientsObj)
-    const [categories, setCategories ] = useState(categoriesObj)
-    const userInfo = useSelector(state => state.accountReducer.user)
+    const [category, setCategory ] = useState(categoriesObj)
     const { id } = useParams();
+    const { putRecipe } = props;
     const history = useHistory();
-    const { userRecipes, setUserRecipes } = props;
+    const [ pushRecipeDetails, setPushRecipeDetails ] = useState()
+
+ // REPOPULATES EDIT FORM WITH THE RECIPE INFO OF THE ID REQUESTED
+    useEffect(() => {
+        axiosWithAuth()
+        .get(`http://hsmm-secretfamilyrecipe.herokuapp.com/recipes/recipe/${id}`)
+        .then(res => {
+            console.log(res)
+            setRecipeDetails({
+                    // recipeid: res.data.recipeid,
+                    title: res.data.title,
+                    source: res.data.source,
+                    preptime: res.data.preptime,
+                    ingredients: res.data.ingredients.ingredient,
+                    categories: res.data.categories.category,
+                    instruction: recipeDetails.instruction.trim(),
+            })
+            setPushRecipeDetails({
+                recipeid: res.data.recipeid,
+                title: res.data.title,
+                source: res.data.source,
+                preptime: res.data.preptime,
+                ingredients: res.data.ingredients.ingredient,
+                categories: res.data.categories.category,
+                instruction: recipeDetails.instruction.trim(),
+            })
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }, [id])
+
 
     const inputChange = evt => {
         setRecipeDetails({
@@ -41,43 +74,42 @@ const UpdateRecipe = (props) => {
         });
     };
 
-    const postUpdatedRecipe = updatedRecipe => {
-        axiosWithAuth()
-        .put(`http://hsmm-secretfamilyrecipe.herokuapp.com/recipes/recipe/${id}`, updatedRecipe)
-        .then(res => {
-            console.log('put response', res)
+     // INPUT HANDLER FOR INGREDIENTS
+     const handleIngredientsChange = (evt) => {
+        const { name, value } = evt.target
+       //  debugger
+        setIngredients({
+          ...ingredients,
+          [name]: value
         })
-        .catch(err => {
-            console.log(err)
-        })
-    }
+       }
+   
+       // INPUT HANDLER FOR CATEGORIES
+       const handleCatChange = (evt) => {
+         const { name, value } = evt.target
+         setCategory({
+           ...category,
+           [name]: value
+         })
+       }
 
-    const handleSubmit = evt => {
+    // const updatedRecipe = (e) => {
+    //     const { name, value } = e.target;
+    //     setRecipeDetails({
+    //         ...recipeDetails,
+    //         [name]: value
+    //     })
+    // }
+
+    const handleSubmit = (evt)=> {
         evt.preventDefault();
-
-        const updatedRecipe = {
-            title: recipeDetails.title.trim(),
-            source: recipeDetails.source.trim(),
-            preptime: recipeDetails.preptime.trim(),
-            ingredients: [{ingredient: ingredients}],
-            categories: [{categories: categories}],
-            instruction: recipeDetails.instruction.trim(),
-            user: {
-              userid: userInfo.userid,
-              username: userInfo.username,
-              email: userInfo.email,
-              roles: [
-                  {
-                      role: {
-                          roleid: userInfo.roles[0].role.roleid,
-                          name: userInfo.roles[0].role.name
-                      }
-                  }
-              ],
-          }
-        }
-    postUpdatedRecipe(updatedRecipe)
+        console.log(id)
+        console.log(recipeDetails)
+        // debugger
+        putRecipe(id, recipeDetails, pushRecipeDetails)
+        history.push('/userprofile')
     }
+    
         // axiosWithAuth()
         // .put(`http://hsmm-secretfamilyrecipe.herokuapp.com/recipes/recipe/${id}`, recipeDetails)
         // .then(res => {
@@ -87,17 +119,8 @@ const UpdateRecipe = (props) => {
         //     console.log(err)
         // })
 
-    // REPOPULATES EDIT FORM WITH THE RECIPE INFO OF THE ID REQUESTED
-    useEffect(() => {
-        axiosWithAuth()
-        .get(`http://hsmm-secretfamilyrecipe.herokuapp.com/recipes/recipe/${id}`)
-        .then(res => {
-            setRecipeDetails(res.data)
-        })
-        .catch(err => {
-            console.log(err)
-        })
-    }, [id])
+   
+
 
     return (
         <div>
@@ -132,15 +155,24 @@ const UpdateRecipe = (props) => {
                         />
                         </label>
                         <br/>
-                        
-                <label>Ingredients&nbsp;
-                        <input
-                            value={recipeDetails.ingredients}
-                            onChange={inputChange}
-                            name='ingredients'
-                            type='text'
-                        />
-                        </label>
+
+                        <label>Ingredient Name&nbsp;
+                            <input
+                              value={ingredients.name}
+                              onChange={handleIngredientsChange}
+                              name="name"
+                              type="text"
+                            />
+                      </label>
+                            <br/>
+                      <label>Ingredient Amount&nbsp;
+                            <input
+                              value={ingredients.amount}
+                              onChange={handleIngredientsChange}
+                              name="amount"
+                              type="text"
+                            />
+                      </label>
                         <br/>
 
                       <label>Instructions&nbsp;
@@ -155,9 +187,9 @@ const UpdateRecipe = (props) => {
               
                         <label>Recipe Category&nbsp;
                         <input
-                            value={recipeDetails.categories}
-                            onChange={inputChange}
-                            name='categories'
+                            value={category.categoryname}
+                            onChange={handleCatChange}
+                            name='categoryname'
                             type='text'
                         />
                         </label>   
@@ -169,4 +201,10 @@ const UpdateRecipe = (props) => {
     )
 }
 
-export default UpdateRecipe;
+function mapStateToProps(state) {
+    return {
+        recipes: state.recipes
+    }
+}
+
+export default connect(mapStateToProps, { putRecipe })(UpdateRecipe);

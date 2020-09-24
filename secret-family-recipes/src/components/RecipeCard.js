@@ -1,6 +1,9 @@
 import React,{ useState, useEffect} from 'react';
 import { useHistory } from 'react-router-dom';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
+import { deleteRecipe } from '../actions/index';
+import { connect } from 'react-redux';
+ 
 import axios from 'axios';
 
 import styled from 'styled-components'
@@ -24,31 +27,26 @@ border: 5px solid #89B0AE;
   background-color: #BEE3DB;
   border-radius: 10px;
  }
+
+ .deleteBtn{
+  margin-left:35%;
+  padding: 2%;
+  margin-top:2%;
+  margin-bottom:2%;
+  background-color: #BEE3DB;
+  border-radius: 10px;
+ }
 `
 
-
-
-
-
 const RecipeCard = (props) => {
-    const { recipe } = props;
+    const { recipe, deleteRecipe } = props;
     const history = useHistory();
 
-
-
-    // DELETE FUNCTION works when userRecipes is inside dependency array in UserProfile useEffect
-    // doesn't work when the dependency array is empty
-    // const handleDelete = evt => {
-    //     evt.preventDefault();
-    //     axiosWithAuth()
-    //     .delete(`http://hsmm-secretfamilyrecipe.herokuapp.com/recipes/recipe/${recipe.recipeid}`)
-    //     .then(res => {
-    //         // setUserRecipes(userRecipes); use .filter to filter out id's 
-    //     })
-    //     .catch(err => {
-    //         console.log(err)
-    //     });
-    // };
+    // DELETE FUNCTION
+    const handleDelete = evt => {
+        evt.preventDefault();
+        deleteRecipe(evt.target.id);
+    };
 
     return (
         <>
@@ -67,19 +65,25 @@ const RecipeCard = (props) => {
                         })}
                 </div>
                     <br/>
-                <div className='instruction'>{recipe.instruction}</div>
+                <div className='instruction'>{recipe.instruction}
                     <h3 >Categories:</h3>
                         {recipe.categories.map((item)=>{
                             return(
                                 <div key={item.category.categoryid}>{item.category.categoryname}</div>
                             )
                         })}
-                <button className ='editBtn' onClick={() => history.push(`/update-recipe/${recipe.recipeid}`)}>Edit</button>
-                {/* <button onClick={handleDelete}>Delete</button> */}
+                    <button className ='editBtn' onClick={() => history.push(`/update-recipe/${recipe.recipeid}`)}>Edit</button>
+                <button className='deleteBtn' id={recipe.recipeid} onClick={handleDelete}>Delete</button>
+            </div>
             </StyledRecipe>
         </>
     )
 }
 
+function mapStateToProps(state) {
+    return {
 
-export default RecipeCard;
+    }
+}
+
+export default connect(mapStateToProps, { deleteRecipe })(RecipeCard);

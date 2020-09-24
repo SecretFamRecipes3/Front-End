@@ -1,5 +1,5 @@
 import { ADD_RECIPE } from '../actions/recipeActions';
-import { FETCH_RECIPES_SUCCESS, FETCH_RECIPES } from '../actions/index';
+import { FETCH_RECIPES_SUCCESS, FETCH_RECIPES, FETCH_A_RECIPE, DELETE_RECIPE, PUT_RECIPE } from '../actions/index';
 
 const ingredientsObj = {
     // ingredientid: 42,
@@ -24,6 +24,7 @@ const initialRecipe = {
 export const initialState = {
     recipes: [],
     loadingRecipes: false,
+    recipe: {},
 };
 
 
@@ -47,6 +48,31 @@ export const recipeReducer = (state = initialState, action) => {
                 ...state,
                 recipes: action.payload,
                 loadingRecipes: false
+            }
+        case FETCH_A_RECIPE:
+            return {
+                ...state,
+                recipe: action.payload,
+            }
+        case DELETE_RECIPE: 
+            return {
+                ...state,
+                recipes: [...state.recipes.filter(item => item.id !== action.payload.id)]
+            }
+        case PUT_RECIPE: 
+            return {
+                ...state,
+                recipes: state.recipes.map((item) =>{
+                //    debugger // if(item.recipeid != action.payload[0]){
+            if(item.recipeid != action.payload.recipeid){
+                        // console.log(action.payload[1]) 
+                    console.log(action.payload)
+                    return action.payload
+                        // return item
+                    } else {
+                        return item
+                    }
+                })
             }
     default:
         return state;

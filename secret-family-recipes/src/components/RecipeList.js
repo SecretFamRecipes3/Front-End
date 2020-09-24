@@ -1,16 +1,20 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import RecipeCard from './RecipeCard';
 
 function RecipeList(props) {
-    // const { recipes } = props;
+    const { recipes } = props;
+
+    useEffect(() => {
+        console.log(recipes)
+    }, [recipes])
 
     return(
         <>
         <div>
-            {props.recipes.map((recipeItem) => {
-                return <RecipeCard key={recipeItem.id} recipe={recipeItem} />
+            {recipes.map((recipeItem) => {
+                return <RecipeCard key={recipeItem.recipeid} recipe={recipeItem} />
             })}
         </div>
         </>

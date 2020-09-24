@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react'
-import * as yup from 'yup'
+import React, { useState, useEffect } from 'react';
+import * as yup from 'yup';
+import { connect } from 'react-redux';
 
-import { axiosWithAuth } from '../utils/axiosWithAuth';
+import axios from 'axios';
 import schema from './validation/formSchemaRecipes'
-import { useSelector } from 'react-redux';
 
 import styled from 'styled-components'
+import { fetchArecipe } from '../actions/index'
 
 
 const StyledRecipe = styled.div `
@@ -68,13 +69,11 @@ const initialRecipeFormValues = {
 }
 
 const ingredientsObj = {
-    // ingredientid: 42,
     name: '',
     amount: '',
 }
 
 const categoriesObj = {
-  // categoryid: 56,
   categoryname: '',
 }
     
@@ -89,46 +88,14 @@ const initialRecipeFormErrors= {
     
 const initialRecipeDisabled = true
 
-export default function RecipeForm (props) {
-//set state  
-      const { userRecipes, setUserRecipes } = props;     
+function RecipeForm(props) {
+//set state     
       const [formRecipeValues, setFormRecipeValues] = useState(initialRecipeFormValues) 
       const [formRecipeErrors, setFormRecipeErrors] = useState(initialRecipeFormErrors) 
       const [disabledRecipe, setDisabledRecipe] = useState(initialRecipeDisabled)  
       const [ ingredients, setIngredients ] = useState(ingredientsObj)
-      const [categories, setCategories ] = useState(categoriesObj)
-      // const userInfo = useSelector(state => state.accountReducer.user)
-
-//  const getRecipes = () => {
-//         axios.get('')
-//         .then(res => {
-//           setRecipes(res.data.data)
-//         })
-//         .catch(err => {
-//           debugger
-//           console.log(err)
-//         })
-//     }
-//         // useEffect(() => {
-//     //   getRecipes()
-//     // }, [])
-    
-    // POSTING NEW RECIPE 
-    const postNewRecipe = newRecipe => {
-      axiosWithAuth()
-        .post('/recipes/recipe', newRecipe)
-        .then(res => {
-          // console.log(res.config.data)
-          setUserRecipes(userRecipes.concat(res.config.data))     
-        })
-        .catch(err => {
-          // debugger
-          console.log(err)
-        })
-        .finally(() => {
-            setFormRecipeValues(initialRecipeFormValues)
-        })
-    }
+      const [category, setCategory ] = useState(categoriesObj)
+      const { fetchArecipe } = props;
 
     // VALIDATIONS
     const validateRecipe = (name, value) => {
@@ -177,8 +144,8 @@ export default function RecipeForm (props) {
     // INPUT HANDLER FOR CATEGORIES
     const handleCatChange = (evt) => {
       const { name, value } = evt.target
-      setCategories({
-        ...categories,
+      setCategory({
+        ...category,
         [name]: value
       })
     }
@@ -192,7 +159,7 @@ export default function RecipeForm (props) {
           source: formRecipeValues.source.trim(),
           preptime: formRecipeValues.preptime.trim(),
           ingredients: [{ingredient: ingredients}],
-          categories: [{categories: categories}],
+          categories: [{category: category}],
           instruction: formRecipeValues.instruction.trim(),
         //   user: {
         //     userid: userInfo.userid,
@@ -208,7 +175,7 @@ export default function RecipeForm (props) {
         //     ],
         // }
       }
-      postNewRecipe(newRecipe)
+      fetchArecipe(newRecipe)
     }
 
     // VALIDATION
@@ -306,7 +273,7 @@ export default function RecipeForm (props) {
                             <br/>
                       <label>Recipe Category&nbsp;
                             <input
-                                value={categories.categoryname}
+                                value={category.categoryname}
                                 onChange={handleCatChange}
                                 name='categoryname'
                                 type='text'
@@ -321,14 +288,11 @@ export default function RecipeForm (props) {
   )
 }
 
-// function mapStateToProps(state) {
-//           return {
-//               title: state.title,
-//               source: state.source,
-//               ingredients: state.ingredients,
-//               instruction: state.instruction
-//           };
-//       };
+function mapStateToProps(state) {
+  return {
+    recipe: state.recipe,
+  }
+};
       
       
-// export default connect(mapStateToProps, { addRecipe })(RecipeForm);
+export default connect(mapStateToProps, { fetchArecipe })(RecipeForm);
