@@ -1,7 +1,5 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-// import { setLoggedIn, setLoggedOut } from './actions/index';
-
 
 import Header from './components/Header';
 import PrivateRoute from './components/PrivateRoute';
@@ -16,13 +14,6 @@ import './App.css';
 
 
 const App = (props) => {
-  // useEffect(() => {
-  //   if (localStorage.getItem('token')){
-  //     props.setLoggedIn();
-  //   } else {
-  //     props.setLoggedOut();
-  //   }
-  // }, [props])
 
   return (
     <Router>
@@ -47,11 +38,12 @@ const App = (props) => {
   );
 }
 
-const mapStateToProps = (state) => {
+function mapStateToProps(state) {
   return {
-    loggedIn: state.loggedIn,
-  };
-};
+    recipes: state.recipes,
+    loadingRecipes: state.loadingRecipes
+  }
+}
 
-export default connect(mapStateToProps, { })(App);
+export default connect(mapStateToProps, {})(App);
 
