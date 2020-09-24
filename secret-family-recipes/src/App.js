@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { setLoggedIn, setLoggedOut } from './actions/index';
+// import { setLoggedIn, setLoggedOut } from './actions/index';
 
 
 import Header from './components/Header';
@@ -16,13 +16,13 @@ import './App.css';
 
 
 const App = (props) => {
-  useEffect(() => {
-    if (localStorage.getItem('token')){
-      props.setLoggedIn();
-    } else {
-      props.setLoggedOut();
-    }
-  }, [props])
+  // useEffect(() => {
+  //   if (localStorage.getItem('token')){
+  //     props.setLoggedIn();
+  //   } else {
+  //     props.setLoggedOut();
+  //   }
+  // }, [props])
 
   return (
     <Router>
@@ -53,5 +53,5 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { setLoggedIn, setLoggedOut })(App);
+export default connect(mapStateToProps, { })(App);
 

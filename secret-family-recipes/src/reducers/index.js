@@ -1,11 +1,20 @@
-import { SET_LOGGED_IN, SET_LOGGED_OUT, USER_SUCCESS, USER_LOGOUT } from '../actions/index';
+import { SET_LOGGED_IN, SET_LOGGED_OUT, USER_SUCCESS, USER_LOGOUT, SET_USER_INFO } from '../actions/index';
 
 export const initialState = {
     loggedIn: false,
     user: {
+        userid: "",
         username: " ",
         email: " ",
-        password: " ",
+        roles: [
+            {
+                role: {
+                    roleid: "",
+                    name: ""
+                }
+            }
+        ],
+        
     }
 };
 
@@ -32,6 +41,11 @@ export const accountReducer = (state = initialState, action) => {
         return {
             ...state,
             loggedIn: false,
+        }
+        case SET_USER_INFO: 
+        return {
+            ...state,
+            user: action.payload
         }
         default: 
         return state;
