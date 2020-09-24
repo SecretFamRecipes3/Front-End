@@ -1,9 +1,43 @@
-import React from 'react';
+import React,{ useState, useEffect} from 'react';
 import { useHistory } from 'react-router-dom';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 import { deleteRecipe } from '../actions/index';
 import { connect } from 'react-redux';
  
+import axios from 'axios';
+
+import styled from 'styled-components'
+
+
+const StyledRecipe=styled.div`
+border: 5px solid #89B0AE;
+ border-radius: 30px;
+ width: 40%;
+ margin: 0 auto;
+ padding-left: 4%;  
+ padding-right: 4%;
+ margin-bottom:4%;
+ background-color:#FAF9F9;
+
+ .editBtn{
+  margin-left:35%;
+  padding: 2%;
+  margin-top:2%;
+  margin-bottom:2%;
+  background-color: #BEE3DB;
+  border-radius: 10px;
+ }
+
+ .deleteBtn{
+  margin-left:35%;
+  padding: 2%;
+  margin-top:2%;
+  margin-bottom:2%;
+  background-color: #BEE3DB;
+  border-radius: 10px;
+ }
+`
+
 const RecipeCard = (props) => {
     const { recipe, deleteRecipe } = props;
     const history = useHistory();
@@ -16,29 +50,32 @@ const RecipeCard = (props) => {
 
     return (
         <>
-            <div className='recipeCard'>
-                <h4>{recipe.title}</h4>
-                <h5>Source: {recipe.source}</h5>
-                <h6>Prep Time: {recipe.preptime}</h6>
+            <StyledRecipe className='recipeCard'>
+                <h2>{recipe.title}</h2>
+                <h3>Source: {recipe.source}</h3>
+                <h3>Prep Time: {recipe.preptime}</h3>
                 <div>
-                    <p style={{fontWeight:"bold"}}>Ingredients</p>
+                    <h3 className= 'ingredients'>Ingredients:</h3>
                         {recipe.ingredients.map((item) => {
                             return (
-                                <div key={item.ingredient.ingredientid}>{item.ingredient.amount} {item.ingredient.name}</div>
+                                <ul>
+                                <li key={item.ingredient.ingredientid}>{item.ingredient.amount} {item.ingredient.name} </li>
+                                </ul>
                             )
                         })}
                 </div>
                     <br/>
-                <div className='instruction'>{recipe.instruction}</div>
-                    <p style={{fontWeight:"bold"}}>Categories</p>
+                <div className='instruction'>{recipe.instruction}
+                    <h3 >Categories:</h3>
                         {recipe.categories.map((item)=>{
                             return(
                                 <div key={item.category.categoryid}>{item.category.categoryname}</div>
                             )
                         })}
-                <button onClick={() => history.push(`/update-recipe/${recipe.recipeid}`)}>Edit</button>
-                <button id={recipe.recipeid} onClick={handleDelete}>Delete</button>
+                    <button className ='editBtn' onClick={() => history.push(`/update-recipe/${recipe.recipeid}`)}>Edit</button>
+                <button className='deleteBtn' id={recipe.recipeid} onClick={handleDelete}>Delete</button>
             </div>
+            </StyledRecipe>
         </>
     )
 }

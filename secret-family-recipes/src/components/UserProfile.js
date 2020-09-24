@@ -4,7 +4,16 @@ import { connect } from 'react-redux';
 import RecipeForm from './RecipeForm';
 import RecipeList from './RecipeList';
 import { fetchRecipes } from '../actions/index';
+import styled from 'styled-components'
 
+
+const StyledProfile = styled.div`
+ 
+h1,p{
+    text-align:center;
+    text-align:center;
+}
+`
 
 const UserProfile = (props) => {
     const { fetchRecipes, loadingRecipes } = props;
@@ -16,9 +25,9 @@ const UserProfile = (props) => {
 
     return (
         <>
-            <div>
+            <StyledProfile >
                 <h1>My Recipes</h1>
-                <p className='title'>Keep track of your family's favorites...</p>
+                <p className='title'>Here you will find all of your family's favorites <br/> stored in one convenient location!</p>
 
                 <div>
                     <RecipeList />
@@ -26,7 +35,8 @@ const UserProfile = (props) => {
                     <div className="recipeForm">
                         <RecipeForm />
                     </div>
-            </div>
+                
+            </StyledProfile>
         </>
     )
 }

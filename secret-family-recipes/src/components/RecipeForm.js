@@ -11,9 +11,11 @@ import { fetchArecipe } from '../actions/index'
 
 const StyledRecipe = styled.div `
  border: 5px solid #89B0AE;
+ border-radius: 30px;
  width: 40%;
  margin: 0 auto;
  padding-left: 4%;  
+ margin-bottom:10%;
  background-color:#FAF9F9;
  /* font-family:'@import url('https://fonts.googleapis.com/css2?family=Noto+Serif&display=swap')'; */
  
@@ -36,12 +38,15 @@ padding-bottom:1%;
 
 .submitBtn{
   margin-left:35%;
+  padding: 2%;
   margin-top:2%;
   margin-bottom:2%;
+  background-color: #BEE3DB;
+  border-radius: 10px;
  }
 
  textarea{
-  font-family:'arial' }
+  font-family:'Noto' }
 
   .errors{
     color:red;

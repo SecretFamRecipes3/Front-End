@@ -1,5 +1,4 @@
 export default {
-
   main: '#89b0ae',
   black: 'black',
   white: 'white',
@@ -7,6 +6,5 @@ export default {
   marginSmall: '10px',
   regBorder: '3px solid white',
   buttonColor: '#555B6E',
-  mobileBreakpoint:'(max-width: 550px)'
+  mobileBreakpoint: '(max-width: 550px)',
 };
-

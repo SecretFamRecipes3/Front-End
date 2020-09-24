@@ -1,9 +1,25 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import styled from 'styled-components';
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+
+  &:focus,
+  &:hover {
+    text-decoration: underline;
+  }
+  &:visited,
+  &:link,
+  /* &:active {
+    text-decoration: none; */
+  }
+  color: black;
+`;
 
 function Header(props) {
-    return (
+  return (
     <>
         {!props.loggedIn && (
             <div className="navLinks">
@@ -20,13 +36,13 @@ function Header(props) {
             </div>
         )}
     </>
-    );
+  );
 }
 
 const mapStateToProps = (state) => {
-    return {
-        loggedIn: state.loggedIn,
-    };
+  return {
+    loggedIn: state.loggedIn,
+  };
 };
 
 export default connect(mapStateToProps, {})(Header);

@@ -10,13 +10,15 @@ import styled from 'styled-components';
 
 //styled-components
 const StyledForm = styled.form`
-  background-color: ${(pr) => pr.theme.main};
+  /* background-color: ${(pr) => pr.theme.main}; */
   padding: ${(pr) => pr.theme.paddingSmall};
   margin: ${(pr) => pr.theme.marginSmall};
   border: ${(pr) => pr.theme.regBorder};
+  background-color: rgba(255, 255, 255, 0.5);
+
   border-radius: 10px;
   display: flex;
-  width: 50%;
+  width: 38%;
   margin: 0 auto;
   justify-content: center;
   text-align: center;
@@ -25,12 +27,22 @@ const StyledForm = styled.form`
   margin-top: 5%;
 `;
 
+const StyledImg = styled.div`
+  background-image: url('https://images.unsplash.com/photo-1505935428862-770b6f24f629?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=500&h=500&fit=crop&ixid=eyJhcHBfaWQiOjF9');
+  min-height: 300px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  height: 90vh;
+`;
+
 const StyledFormInputs = styled.input`
   margin-bottom: ${(pr) => pr.theme.marginSmall};
   margin-left: 10px;
 
   height: 40px;
-  background-color: #bee3db;
+  background-color: rgba(255, 255, 255, 0.5);
   border: none;
   border-bottom: 2.5px solid white;
   ::placeholder {
@@ -44,7 +56,7 @@ const StyledFormInputs = styled.input`
 const Button = styled.button`
   height: 50px;
   border-radius: 30px;
-  width: 50%;
+  width: 70%;
 `;
 
 const Errors = styled.div`
@@ -52,9 +64,9 @@ const Errors = styled.div`
 `;
 
 const initialFormValues = {
-    username: '',
-    email: '',
-    password: '',
+  username: '',
+  email: '',
+  password: '',
 };
 
 const initialFormErrors = {
@@ -81,14 +93,17 @@ const Signup = (props) => {
   const submitHandler = (evt) => {
     evt.preventDefault();
     axios
-    .post('http://hsmm-secretfamilyrecipe.herokuapp.com/createnewuser', formValues)
-    .then(res => {
-      localStorage.setItem('token', res.data.access_token);
-      history.push('/userprofile');
-    })
-    .catch(err => {
-      console.log(err)
-    })
+      .post(
+        'http://hsmm-secretfamilyrecipe.herokuapp.com/createnewuser',
+        formValues
+      )
+      .then((res) => {
+        localStorage.setItem('token', res.data.access_token);
+        history.push('/userprofile');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
     const newSignup = {
       username: formValues.username.trim(),
@@ -118,55 +133,58 @@ const Signup = (props) => {
   }, [formValues]);
 
   return (
-    <StyledForm className="form-container" onSubmit={submitHandler}>
-      <h2>
-        Sign Up for <br />
-        Secret Family Recipes
-      </h2>
-      <Errors className="errors">
-        <div>{errors.username}</div>
-        <div>{errors.password}</div>
-        <div>{errors.email}</div>
-      </Errors>
-      <div className="form-inputs">
+    <StyledImg>
+      <br />
+      <StyledForm className="form-container" onSubmit={submitHandler}>
+        <h2>
+          Sign Up for <br />
+          Secret Family Recipes
+        </h2>
+        <Errors className="errors">
+          <div>{errors.username}</div>
+          <div>{errors.password}</div>
+          <div>{errors.email}</div>
+        </Errors>
+        <div className="form-inputs">
+          <label>
+            <StyledFormInputs
+              name="username"
+              type="text"
+              style={{ width: '350px' }}
+              value={formValues.username}
+              onChange={(e) => changeHandler(e)}
+              placeholder="username"
+            ></StyledFormInputs>
+          </label>
+
+          <br />
+
+          <label>
+            <StyledFormInputs
+              name="password"
+              type="password"
+              style={{ width: '350px' }}
+              value={formValues.password}
+              onChange={changeHandler}
+              placeholder="password"
+            ></StyledFormInputs>
+          </label>
+        </div>
+
         <label>
           <StyledFormInputs
-            name="username"
-            type="text"
+            name="email"
+            type="email"
             style={{ width: '350px' }}
-            value={formValues.username}
-            onChange={(e) => changeHandler(e)}
-            placeholder="username"
-          ></StyledFormInputs>
-        </label>
-
-        <br />
-
-        <label>
-          <StyledFormInputs
-            name="password"
-            type="password"
-            style={{ width: '350px' }}
-            value={formValues.password}
+            value={formValues.email}
             onChange={changeHandler}
-            placeholder="password"
+            placeholder="email"
           ></StyledFormInputs>
         </label>
-      </div>
 
-      <label>
-        <StyledFormInputs
-          name="email"
-          type="email"
-          style={{ width: '350px' }}
-          value={formValues.email}
-          onChange={changeHandler}
-          placeholder="email"
-        ></StyledFormInputs>
-      </label>
-
-      <Button disabled={disabled}>Sign Up</Button>
-    </StyledForm>
+        <Button disabled={disabled}>Sign Up</Button>
+      </StyledForm>
+    </StyledImg>
   );
 };
 
@@ -176,4 +194,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { })(Signup);
+export default connect(mapStateToProps, {})(Signup);

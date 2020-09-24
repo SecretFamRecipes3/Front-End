@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -13,13 +13,14 @@ import AllRecipes from './components/AllRecipes';
 
 import './App.css';
 
-
 const App = (props) => {
-
   return (
     <Router>
       <div className="App">
         <header className="App-header">
+          <div className="title">
+            <h3>Secret Family Recipes</h3>
+          </div>
           <Header />
         </header>
         <div> 
@@ -38,14 +39,13 @@ const App = (props) => {
       </div>
     </Router>
   );
-}
+};
 
 function mapStateToProps(state) {
   return {
     recipes: state.recipes,
-    loadingRecipes: state.loadingRecipes
-  }
+    loadingRecipes: state.loadingRecipes,
+  };
 }
 
 export default connect(mapStateToProps, {})(App);
-
