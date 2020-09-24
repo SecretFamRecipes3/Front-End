@@ -1,25 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import theme from './theme';
-import { ThemeProvider } from 'styled-components';
-
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
+import { ThemeProvider } from 'styled-components';
 
 import App from './App';
-import rootReducer from './reducers/rootReducer';
-
+import theme from './theme';
+import recipeReducer from './reducers/recipeReducer';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
+const store = createStore(recipeReducer, applyMiddleware(thunk));
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-
       <ThemeProvider theme={theme}>
         <App />
       </ThemeProvider>

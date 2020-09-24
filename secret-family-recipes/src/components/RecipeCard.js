@@ -3,22 +3,22 @@ import { useHistory } from 'react-router-dom';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 const RecipeCard = (props) => {
-    const { recipe, setUserRecipes, userRecipes } = props
+    const { recipe } = props;
     const history = useHistory();
 
     // DELETE FUNCTION works when userRecipes is inside dependency array in UserProfile useEffect
     // doesn't work when the dependency array is empty
-    const handleDelete = evt => {
-        evt.preventDefault();
-        axiosWithAuth()
-        .delete(`http://hsmm-secretfamilyrecipe.herokuapp.com/recipes/recipe/${recipe.recipeid}`)
-        .then(res => {
-            // setUserRecipes(userRecipes);
-        })
-        .catch(err => {
-            console.log(err)
-        });
-    };
+    // const handleDelete = evt => {
+    //     evt.preventDefault();
+    //     axiosWithAuth()
+    //     .delete(`http://hsmm-secretfamilyrecipe.herokuapp.com/recipes/recipe/${recipe.recipeid}`)
+    //     .then(res => {
+    //         // setUserRecipes(userRecipes); use .filter to filter out id's 
+    //     })
+    //     .catch(err => {
+    //         console.log(err)
+    //     });
+    // };
 
     return (
         <>
@@ -39,14 +39,15 @@ const RecipeCard = (props) => {
                     <p style={{fontWeight:"bold"}}>Categories</p>
                         {recipe.categories.map((item)=>{
                             return(
-                                <div key={item.categories.categoryid}>{item.categories.categoryname}</div>
+                                <div key={item.category.categoryid}>{item.category.categoryname}</div>
                             )
                         })}
                 <button onClick={() => history.push(`/update-recipe/${recipe.recipeid}`)}>Edit</button>
-                <button onClick={handleDelete}>Delete</button>
+                {/* <button onClick={handleDelete}>Delete</button> */}
             </div>
         </>
     )
 }
+
 
 export default RecipeCard;
