@@ -3,15 +3,23 @@
 } */
 
 .App-header {
-  background-color: #6b8ccf;
-  min-height: 20vh;
+  background-color: #89B0AE;
+  min-height: 15vh;
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-end;
+  justify-content: space-around;
   font-size: calc(10px + 2vmin);
   color: white;
+ 
 }
+
+.navLinks{
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+}
+
 
 
 .recipeContainer {

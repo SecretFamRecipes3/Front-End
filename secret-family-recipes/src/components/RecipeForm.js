@@ -1,16 +1,12 @@
-
 import React, { useState, useEffect } from 'react'
 import * as yup from 'yup'
-import schema from './validation/formSchemaRecipes'
-import Ingredient from './Ingredient';
-import styled from 'styled-components'
 
 import { axiosWithAuth } from '../utils/axiosWithAuth';
-import { setState } from 'theme-provider';
+import schema from './validation/formSchemaRecipes'
+import { useSelector } from 'react-redux';
 
+import styled from 'styled-components'
 
-// import { addRecipe } from '../actions/recipeActions';
-// import { connect } from 'react-redux';
 
 const StyledRecipe = styled.div `
  border: 5px solid #89B0AE;
@@ -56,8 +52,6 @@ padding-bottom:1%;
   }
 `
 
-const defaultIngredientObj = { "ingredient" : { "name": "", "amount": "" } }
-const defaultCategoryObj = { "categories" :{ "categoryname" : "" }}
 const initialRecipeFormValues = {
     ///// TEXT INPUTS /////
     title: '',
@@ -66,33 +60,41 @@ const initialRecipeFormValues = {
     ingredients: [],
     categories: [],
     instruction: '',
-    }
+}
+
+const ingredientsObj = {
+    ingredientid: 42,
+    name: '',
+    amount: '',
+}
+
+const categoriesObj = {
+  categoryid: 56,
+  categoryname: '',
+}
     
-    const initialRecipeFormErrors={
-    title: '',
-    source: '',
-    // time: '',
-    ingredients:[],
-    categories: [],
-    instruction: '',
-    }
+const initialRecipeFormErrors= {
+  title: '',
+  source: '',
+  preptime: '',
+  ingredients:[],
+  categories: [],
+  instruction: '',
+}
     
-    const initialRecipes = []
-    const initialRecipeDisabled = true
-    const initialIngredientList= []
-    const initialCategories = []
+const initialRecipeDisabled = true
 
 export default function RecipeForm (props) {
-
-//set state 
-      const [recipes, setRecipes] = useState(initialRecipes)        
+//set state  
+      const { userRecipes, setUserRecipes } = props;     
       const [formRecipeValues, setFormRecipeValues] = useState(initialRecipeFormValues) 
       const [formRecipeErrors, setFormRecipeErrors] = useState(initialRecipeFormErrors) 
       const [disabledRecipe, setDisabledRecipe] = useState(initialRecipeDisabled)  
-      const [ingredient, setIngredient] = useState(initialIngredientList)
-      const [categories, setCategories ] = useState(initialCategories)
-     
-    //   const getRecipes = () => {
+      const [ ingredients, setIngredients ] = useState(ingredientsObj)
+      const [categories, setCategories ] = useState(categoriesObj)
+      const userInfo = useSelector(state => state.accountReducer.user)
+
+//  const getRecipes = () => {
     //     axios.get('')
     //     .then(res => {
     //       setRecipes(res.data.data)
@@ -106,23 +108,24 @@ export default function RecipeForm (props) {
     //   getRecipes()
     // }, [])
     
+    // POSTING NEW RECIPE 
     const postNewRecipe = newRecipe => {
       axiosWithAuth()
         .post('/recipes/recipe', newRecipe)
         .then(res => {
-          console.log(res)
-          setRecipes([...recipes, res.data]) 
-          // setRecipes(recipes.concat(res.data))?        
+          // console.log(res.config.data)
+          setUserRecipes(userRecipes.concat(res.config.data))     
         })
         .catch(err => {
           // debugger
           console.log(err)
         })
-        // .finally(() => {
-        //     setFormRecipeValues(initialRecipeFormValues)
-        // })
+        .finally(() => {
+            setFormRecipeValues(initialRecipeFormValues)
+        })
     }
-    
+
+    // VALIDATIONS
     const validateRecipe = (name, value) => {
       yup
         .reach(schema, name)
@@ -141,7 +144,7 @@ export default function RecipeForm (props) {
         });
     }
     
-    // Input change handler
+    // INPUT HANDLER
     const inputChange = (name, value) => {
       validateRecipe(name, value)
       setFormRecipeValues({
@@ -155,8 +158,27 @@ export default function RecipeForm (props) {
       const valueToUse = type === 'checkbox' ? checked : value
       inputChange(name, valueToUse)
     }
+
+    // INPUT HANDLER FOR INGREDIENTS
+    const handleIngredientsChange = (evt) => {
+     const { name, value } = evt.target
+    //  debugger
+     setIngredients({
+       ...ingredients,
+       [name]: value
+     })
+    }
+
+    // INPUT HANDLER FOR CATEGORIES
+    const handleCatChange = (evt) => {
+      const { name, value } = evt.target
+      setCategories({
+        ...categories,
+        [name]: value
+      })
+    }
     
- // adds new recipe to profile
+    // SUBMIT HANDLER FOR POSTING NEW RECIPE
     const formSubmit = (event) => {
         event.preventDefault()
         
@@ -164,9 +186,22 @@ export default function RecipeForm (props) {
           title: formRecipeValues.title.trim(),
           source: formRecipeValues.source.trim(),
           preptime: formRecipeValues.preptime.trim(),
-          ingredients: formRecipeValues.ingredients,
-          categories: formRecipeValues.categories,
+          ingredients: [{ingredient: ingredients}],
+          categories: [{categories: categories}],
           instruction: formRecipeValues.instruction.trim(),
+          user: {
+            userid: userInfo.userid,
+            username: userInfo.username,
+            email: userInfo.email,
+            roles: [
+                {
+                    role: {
+                        roleid: userInfo.roles[0].role.roleid,
+                        name: userInfo.roles[0].role.name
+                    }
+                }
+            ],
+        }
       }
       postNewRecipe(newRecipe)
     }
@@ -180,149 +215,106 @@ export default function RecipeForm (props) {
       }, [formRecipeValues])
   
    
-      // to add ingredients function version 1
-      const onClick =evt =>{
-        //setIngreident(evt.target.value)
-        const { name, value} = evt.target
-        setIngredient({
-          ...ingredient,
-          [name]: value 
-        })
-        setIngredient(initialIngredientList)
-      }
-
-      const onCatChange = evt => {
-        const { name, value } = evt.target
-        setCategories({
-          ...categories,
-          [name]: value
-        })
-        setCategories(initialCategories)
-      }
-
-      // to add ingredients function version 2
-      // function addIngredient(e) {
-      //   e.preventDefault();
-      //   setFormRecipeValues({
-      //     ...formRecipeValues,
-      //     ingredients: [...formRecipeValues.ingredients],
-      //   });
-      // }
-      // // goes with add ingredient function version 2
-      // function newIngredients(ingredientObj, index) {
-      //   const result = [...formRecipeValues.ingredients];
-      //   result[index] = ingredientObj;
-      //   return result;
-      // }
-      // // goes with add ingredient function version 2
-      // function updateIngredients(index, ingredientObj) {
-      //   const updatedIngredients = newIngredients(ingredientObj, index);
-      //   setFormRecipeValues({
-      //     ...formRecipeValues,
-      //     ingredients: updatedIngredients
-      //   });
+      // ADD INGREDIENTS FUNCTION
+      // const onClick =evt =>{
+      //   //setIngreident(evt.target.value)
+      //   const { name, value} = evt.target
+      //   setIngredient({
+      //     ...ingredient,
+      //     [name]: value 
+      //   })
+      //   setIngredient(initialIngredientList)
       // }
 
-        return (
-          <StyledRecipe>
+  return (
+        <StyledRecipe>
             <form className='form container' onSubmit={formSubmit}>
-            <h2>Keep track of your family's favorites!</h2>
-            <div className='recipeInput'>
+              <h2>Keep track of your family's favorites!</h2>
+              <div className='recipeInput'>
               
 
                 <div className='errors'>
                 {/* 🔥 RENDER THE VALIDATION ERRORS HERE */}
                 <div>{formRecipeErrors.title}</div>
                 <div>{formRecipeErrors.source}</div>
-                {/* <div>{formRecipeErrors.time}</div> */}
+                <div>{formRecipeErrors.preptime}</div>
                 <div>{formRecipeErrors.ingredients}</div>
                 <div>{formRecipeErrors.instruction}</div>
                 </div>
                     
-            <div className='form-recipe inputs'>       
-        
-                 <label>Recipe Title&nbsp;
-                        <input
-                            value={formRecipeValues.title}
-                            onChange={onChange}
-                            name='title'
-                            type='text'
-                        />
-                        </label>
-                        <br/>
-                <label>Source&nbsp;
-                        <input
-                            value={formRecipeValues.source}
-                            onChange={onChange}
-                            name='source'
-                            type='text'
-                        />
-                        </label>
-                        <br/>
-                <label>Prep + Cook Time&nbsp;
-                        <textarea 
-                            value={formRecipeValues.preptime}
-                            onChange={onChange}
-                            name='preptime'
-                            type='text'
-                            placeholder='prep:30min total time:2hr'
-                        />
-                        </label>
-                        <br/>
-                        
-                <label>Ingredients&nbsp;
-                        <input
-                            value={formRecipeValues.ingredients}
-                            onChange={onChange}
-                            name='ingredients'
-                            type='text'
-                        /> <button onClick={onClick}>+</button>
-                        
-                        </label>
-                        {/* <label>Ingredients&nbsp;
-                          {formRecipeValues.ingredients.map((item, index) => {
-                            console.log(item)
-                            return (
-                              <Ingredient
-                                item={item}
-                                onChange={onChange}
-                                key={index}
-                                index={index}
-                                updateIngredients={updateIngredients}
-                              />
-                            );
-                          })}
-                          <button onClick={addIngredient}>Add</button>
-                        </label> */}
-                      
-                        <br/>
-                      <label>Instructions&nbsp;
-                        <textarea rows = "10" cols ="30"
-                            value={formRecipeValues.instruction}
-                            onChange={onChange}
-                            name='instruction'
-                            type='text'
-                        />
-                        </label>
-                        <br/>
-              
-                        <label>Recipe Category&nbsp;
-                        <input
-                            value={formRecipeValues.categories}
-                            onChange={onChange}
-                            name='categories'
-                            type='text'
-                        />
-                        </label>   
+                <div className='form-recipe inputs'>       
             
-                <button className='submitBtn' disabled={disabledRecipe}>submit</button>   
-            </div>
-          </div>
-      </form>
-   </StyledRecipe>
-        )
-        }
-
+                    <label>Recipe Title&nbsp;
+                            <input
+                                value={formRecipeValues.title}
+                                onChange={onChange}
+                                name='title'
+                                type='text'
+                            />
+                            </label>
+                            <br/>
+                      <label>Source&nbsp;
+                            <input
+                                value={formRecipeValues.source}
+                                onChange={onChange}
+                                name='source'
+                                type='text'
+                            />
+                      </label>
+                            <br/>
+                      <label>Prep + Cook Time&nbsp;
+                            <textarea 
+                                value={formRecipeValues.preptime}
+                                onChange={onChange}
+                                name='preptime'
+                                type='text'
+                                placeholder='prep:30min total time:2hr'
+                            />
+                      </label>
+                            <br/>
+                      <label>Ingredient Name&nbsp;
+                            <input
+                              value={ingredients.name}
+                              onChange={handleIngredientsChange}
+                              name="name"
+                              type="text"
+                            />
+                      </label>
+                            <br/>
+                      <label>Ingredient Amount&nbsp;
+                            <input
+                              value={ingredients.amount}
+                              onChange={handleIngredientsChange}
+                              name="amount"
+                              type="text"
+                            />
+                      </label>
+                            <br/>
+                      <label>Instructions&nbsp;
+                            <textarea rows = "10" cols ="30"
+                                value={formRecipeValues.instruction}
+                                onChange={onChange}
+                                name='instruction'
+                                type='text'
+                            />
+                      </label>
+                            <br/>
+                      <label>Recipe Category&nbsp;
+                            <input
+                                value={categories.categoryname}
+                                onChange={handleCatChange}
+                                name='categoryname'
+                                type='text'
+                            />
+                      </label>   
+                
+                      <button className='submitBtn' disabled={disabledRecipe}>submit</button>   
+                </div>
+              </div>
+            </form>
+        </StyledRecipe>
+  )
+}
 
 // function mapStateToProps(state) {
 //           return {

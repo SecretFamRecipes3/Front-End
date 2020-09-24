@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import * as yup from 'yup';
-import formSchema from './validation/formSchema';
-import styled from 'styled-components';
-
 import { useHistory } from 'react-router-dom';
-import { setLoggedIn, setLoggedOut } from '../actions/index';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import * as yup from 'yup';
+
+import formSchema from './validation/formSchema';
+
+import styled from 'styled-components';
 
 //styled-components
-
 const StyledForm = styled.form`
   background-color: ${(pr) => pr.theme.main};
   padding: ${(pr) => pr.theme.paddingSmall};
@@ -84,8 +83,6 @@ const Signup = (props) => {
     axios
     .post('http://hsmm-secretfamilyrecipe.herokuapp.com/createnewuser', formValues)
     .then(res => {
-      // console.log(res)
-      // props.setLoggedIn();
       localStorage.setItem('token', res.data.access_token);
       history.push('/userprofile');
     })
@@ -179,4 +176,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { setLoggedIn, setLoggedOut })(Signup);
+export default connect(mapStateToProps, { })(Signup);
