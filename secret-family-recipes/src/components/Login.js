@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 import * as yup from 'yup';
 import formSchema from './validation/formSchema';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
-import { setLoggedIn } from '../actions/index';
+import { SET_LOGGED_IN }from '../actions/index'
 import axios from 'axios';
 
 //styled-components
-
 const StyledForm = styled.form`
   background-color: ${(pr) => pr.theme.main};
   padding: ${(pr) => pr.theme.paddingSmall};
@@ -54,7 +53,6 @@ const Errors = styled.div`
 `;
 
 //initial values
-
 const initialFormValues = {
   username: '',
   password: '',
@@ -72,19 +70,19 @@ const Login = (props) => {
   const [savedFormInfo, setSavedFormInfo] = useState(initialLogin);
   const [errors, setErrors] = useState(initialFormErrors);
   const [disabled, setDisabled] = useState(true);
-  // const [post, setPost] = useState([]);
+  const dispatch = useDispatch();
   const history = useHistory();
+   // const [post, setPost] = useState([]);
 
-  useEffect(() => {
-    setLoggedIn();
-  }, []);
 
+  // INPUT HANDLER
   const changeHandler = (evt) => {
     const { name, value } = evt.target;
     validate(name, value);
     setFormValues({ ...formValues, [name]: value });
   };
 
+  // POST USER WHEN LOGGING IN
   const submitHandler = (evt) => {
     evt.preventDefault();
     axios.post('http://hsmm-secretfamilyrecipe.herokuapp.com/login', `grant_type=password&username=${formValues.username}&password=${formValues.password}`, {
@@ -93,30 +91,14 @@ const Login = (props) => {
         Authorization: `Basic ${btoa('lambda-client:lambda-secret')}`,
         'Content-Type': 'application/x-www-form-urlencoded'
       }
-    }
-    )
+    })
     .then(res => {
-      props.setLoggedIn();
       localStorage.setItem('token', res.data.access_token)
       history.push('/userprofile');
     })
       .catch(err => {
       console.log(err)
     });
-    
-  
-    // axios
-    // .post('/login', `grant_type=password&username=${formValues.username}&password=${formValues.password}`)
-    // .then(res => {
-    //   console.log(res)
-    //   props.setLoggedIn();
-    //   localStorage.setItem('token', res.data.access_token)
-    //   history.push('/userprofile');
-    // })
-    // .catch(err => {
-    //   console.log(err)
-    // });
-  
 
     // axios
     //   .post('http://hsmm-secretfamilyrecipe.herokuapp.com/login', formValues)
@@ -136,6 +118,7 @@ const Login = (props) => {
     setFormValues(initialFormValues);
   };
 
+  // VALIDATIONS
   const validate = (name, value) => {
     yup
       .reach(formSchema, name)
@@ -200,4 +183,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { setLoggedIn })(Login);
+export default connect(mapStateToProps, { })(Login);
