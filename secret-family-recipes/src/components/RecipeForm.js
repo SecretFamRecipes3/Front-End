@@ -100,18 +100,18 @@ export default function RecipeForm (props) {
       // const userInfo = useSelector(state => state.accountReducer.user)
 
 //  const getRecipes = () => {
-    //     axios.get('')
-    //     .then(res => {
-    //       setRecipes(res.data.data)
-    //     })
-    //     .catch(err => {
-    //       debugger
-    //       console.log(err)
-    //     })
-    // }
-        // useEffect(() => {
-    //   getRecipes()
-    // }, [])
+//         axios.get('')
+//         .then(res => {
+//           setRecipes(res.data.data)
+//         })
+//         .catch(err => {
+//           debugger
+//           console.log(err)
+//         })
+//     }
+//         // useEffect(() => {
+//     //   getRecipes()
+//     // }, [])
     
     // POSTING NEW RECIPE 
     const postNewRecipe = newRecipe => {
