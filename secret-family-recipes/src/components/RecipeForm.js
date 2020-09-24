@@ -68,13 +68,13 @@ const initialRecipeFormValues = {
 }
 
 const ingredientsObj = {
-    ingredientid: 42,
+    // ingredientid: 42,
     name: '',
     amount: '',
 }
 
 const categoriesObj = {
-  categoryid: 56,
+  // categoryid: 56,
   categoryname: '',
 }
     
@@ -97,7 +97,7 @@ export default function RecipeForm (props) {
       const [disabledRecipe, setDisabledRecipe] = useState(initialRecipeDisabled)  
       const [ ingredients, setIngredients ] = useState(ingredientsObj)
       const [categories, setCategories ] = useState(categoriesObj)
-      const userInfo = useSelector(state => state.accountReducer.user)
+      // const userInfo = useSelector(state => state.accountReducer.user)
 
 //  const getRecipes = () => {
     //     axios.get('')
@@ -194,19 +194,19 @@ export default function RecipeForm (props) {
           ingredients: [{ingredient: ingredients}],
           categories: [{categories: categories}],
           instruction: formRecipeValues.instruction.trim(),
-          user: {
-            userid: userInfo.userid,
-            username: userInfo.username,
-            email: userInfo.email,
-            roles: [
-                {
-                    role: {
-                        roleid: userInfo.roles[0].role.roleid,
-                        name: userInfo.roles[0].role.name
-                    }
-                }
-            ],
-        }
+        //   user: {
+        //     userid: userInfo.userid,
+        //     username: userInfo.username,
+        //     email: userInfo.email,
+        //     roles: [
+        //         {
+        //             role: {
+        //                 roleid: userInfo.roles[0].role.roleid,
+        //                 name: userInfo.roles[0].role.name
+        //             }
+        //         }
+        //     ],
+        // }
       }
       postNewRecipe(newRecipe)
     }

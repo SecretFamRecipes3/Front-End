@@ -4,41 +4,46 @@ import axios from 'axios';
 
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 import RecipeForm from './RecipeForm';
-import RecipeCard from './RecipeCard';
+import RecipeList from './RecipeList';
 import { SET_USER_INFO } from '../actions';
 
-// import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-// import { addRecipe } from '../actions/recipeActions';
+import { connect } from 'react-redux';
+import { fetchRecipes } from '../actions/index';
 
 
 const UserProfile = (props) => {
     const [ userRecipes, setUserRecipes ] = useState([])
     const dispatch = useDispatch();
     const state = useSelector(state => state)
+    const { fetchRecipes, loadingRecipes } = props;
+
+    useEffect(() => {
+        fetchRecipes();
+    }, [fetchRecipes]);
 
     // GETTING RECIPES FROM BACKEND
-    const getRecipeList = () => {
-        axios
-        .get('http://hsmm-secretfamilyrecipe.herokuapp.com/recipes/recipes')
-        .then(res => {
-            // console.log("the response from back", res)
-            setUserRecipes(res.data)
-        })
-        .catch(err => {
-            console.log(err)
-        })
-        axiosWithAuth()
-        .get('/users/userinfo')
-        .then(res => {
-            dispatch({ type: SET_USER_INFO, payload: res.data})
-            // console.log(res)
-        })
-    }
+    // const getRecipeList = () => {
+    //     axios
+    //     .get('http://hsmm-secretfamilyrecipe.herokuapp.com/recipes/recipes')
+    //     .then(res => {
+    //         // console.log("the response from back", res)
+    //         setUserRecipes(res.data)
+    //     })
+    //     .catch(err => {
+    //         console.log(err)
+    //     })
+    //     axiosWithAuth()
+    //     .get('/users/userinfo')
+    //     .then(res => {
+    //         dispatch({ type: SET_USER_INFO, payload: res.data})
+    //         // console.log(res)
+    //     })
+    // }
 
     // RESETS THE STATE WHEN NEW RECIPE IS ADDED *** needs something in dependency array so state is rerendered with the added recipe ***
-    useEffect(() => {
-            getRecipeList();
-        }, []);
+    // useEffect(() => {
+    //         getRecipeList();
+    //     }, []);
 
     // useEffect(() => {
     //     axios
@@ -57,14 +62,22 @@ const UserProfile = (props) => {
     //         // console.log(res)
     //     })
     // }, [])
-    
+    // console.log('recipes inside profile', props.recipes)
     return (
         <>
             <div>
                 <h1>My Recipes</h1>
                 <p className='title'>Keep track of your family's favorites...</p>
 
-                    <div className="recipeContainer">
+                <div>
+                    <RecipeList />
+                </div>
+
+                {/* <div className="recipeContainer">
+                    {!loadingRecipes ? (<RecipeList />) : (<div>Fetching Recipes...</div>)}
+                </div> */}
+
+                    {/* <div className="recipeContainer">
                         {userRecipes.map((recipe) => {
                         return (
                                 <RecipeCard 
@@ -75,11 +88,20 @@ const UserProfile = (props) => {
                                 />
                                 )
                             })}
+                    </div> */}
+                    <div className="recipeForm">
+                        <RecipeForm />
                     </div>
-                    <RecipeForm />
             </div>
         </>
     )
 }
 
-export default UserProfile;
+function mapStateToProps(state) {
+    return {
+        recipes: state.recipes,
+        loadingRecipes: state.loadingRecipes,
+    }
+}
+
+export default connect(mapStateToProps, { fetchRecipes })(UserProfile);
