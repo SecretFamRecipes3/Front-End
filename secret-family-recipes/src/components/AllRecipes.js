@@ -1,15 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import Recipe from './Recipe';
+import styled from 'styled-components';
+
+const StyledRecipe=styled.div`
+border: 5px solid #89B0AE;
+ border-radius: 30px;
+ /* width: 40%; */
+ width: auto;
+ margin: 0 auto;
+ padding-left: 4%;  
+ padding-right: 4%;
+ margin-bottom:4%;
+ background-color:#FAF9F9;
+
+
+ .editBtn{
+  margin-left:35%;
+  padding: 2%;
+  margin-top:2%;
+  margin-bottom:2%;
+  background-color: #BEE3DB;
+  border-radius: 10px;
+ }
+
+ .deleteBtn{
+  margin-left:35%;
+  padding: 2%;
+  margin-top:2%;
+  margin-bottom:2%;
+  background-color: #BEE3DB;
+  border-radius: 10px;
+ }
+`
 
 const AllRecipes = (props) => {
-    const [ userRecipes, setUserRecipes ] = useState([])  
+    const [ userRecipes, setUserRecipes ] = useState([]);
+    const [ show, setShow ] = useState(false);  
 
     const getRecipes = () => {
         axios.get('http://hsmm-secretfamilyrecipe.herokuapp.com/recipes/recipes')
         .then(res => {
-          console.log(res)
           setUserRecipes(res.data)
         })
         .catch(err => {
@@ -22,25 +53,73 @@ const AllRecipes = (props) => {
     }, [])
 
     return (
-      <>
-        <div>
+      <div className="styledRecipeContainer">
+        <StyledRecipe className='recipeCard'>
           {userRecipes.map((item) => {
-          return (
-            
-            <div>
-            <div>{item.title}</div>
-            <p>{item.source}</p>
-            <p>{item.preptime}</p> 
+            return (
+              <div key={item.recipeid}>
+                    <h2>{item.title}</h2>
+                    <h3>Source: {item.source}</h3>
+                    <h3>Prep Time: {item.preptime}</h3>
+                    
+                    <div className='showAndHide'>
+                    <div onClick={() => setShow(!show)}>
+                                { !show ? (
+                            <div className='showAndHide'>Show Details</div>
+                        ) : (
+                            <div>
+                                <div className='showAndHide'>Close Details</div>
+                            
+                                <div>
+                                <h3 className= 'ingredients'>Ingredients:</h3>
+                                {item.ingredients.map((ing) => {
+                                return (
+                                    <ul>
+                                    <li key={ing.ingredient.ingredientid}>{ing.ingredient.amount} {ing.ingredient.name} </li>
+                                    </ul>
+                                )
+                                })}
+                                </div>
+                                <br/>
+                                <div className='instruction'>{item.instruction}
+                                    <h3 >Categories:</h3>
+                                        {item.categories.map((cat)=>{
+                                            return(
+                                                <div key={cat.category.categoryid}>{cat.category.categoryname}</div>
+                                            )
+                                        })}
+                                </div>
+                    </div>
+                    )}
             </div>
-            // <Recipe 
-            //   key={item.recipeid}
-            //   item={item}
-            // />
-          )
-        })}
-        </div>
-      </>
+            </div>
+              </div>
+            )
+          })}
+        </StyledRecipe>
+      </div>
     )
+
+    // return (
+    //   <>
+    //     <div>
+    //       {userRecipes.map((item) => {
+    //       return (
+            
+    //         <div key={item.recipeid}>
+    //         <div>{item.title}</div>
+    //         <p>{item.source}</p>
+    //         <p>{item.preptime}</p> 
+    //         </div>
+    //         // <Recipe 
+    //         //   key={item.recipeid}
+    //         //   item={item}
+    //         // />
+    //       )
+    //     })}
+    //     </div>
+    //   </>
+    // )
 
 }
 

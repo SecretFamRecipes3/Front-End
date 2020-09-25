@@ -1,12 +1,9 @@
-import React,{ useState, useEffect} from 'react';
+import React,{ useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { axiosWithAuth } from '../utils/axiosWithAuth';
 import { deleteRecipe } from '../actions/index';
-import { connect } from 'react-redux';
- 
-import axios from 'axios';
+import { connect } from 'react-redux'; 
 
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 
 const StyledRecipe=styled.div`
@@ -38,7 +35,6 @@ border: 5px solid #89B0AE;
   background-color: #BEE3DB;
   border-radius: 10px;
  }
-
 `
 
 const RecipeCard = (props) => {

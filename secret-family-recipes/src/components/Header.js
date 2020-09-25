@@ -19,23 +19,27 @@ const StyledLink = styled(Link)`
 `;
 
 function Header(props) {
+  const { loggedIn } = props;
+
   return (
-    <>
-        {!props.loggedIn && (
-            <div className="navLinks">
-                        <Link to="/login">Login</Link>
-                        <Link to="/signup">SignUp</Link>
-                        <Link to="/userprofile">My Recipes</Link>
-                        <Link to="/allrecipes">All Recipes</Link>
-            </div>
-        )}
-        {props.loggedIn && (
-            <div className="navLinks">
-                <Link to="/logout">Log Out</Link><br/>
+    <header>
+        {!loggedIn && ( // if you are logged in
+              <div className="navLinks">
+                <Link to="/login">Login</Link>
+                <Link to="/signup">SignUp</Link>
+                {/* <Link to="/login">Log Out</Link> */}
                 <Link to="/userprofile">My Recipes</Link>
-            </div>
+                <Link to="/allrecipes">All Recipes</Link>
+              </div>
         )}
-    </>
+        {loggedIn && ( // if you are logged out
+            <>
+            <Link to="/logout">Log Out</Link>
+            <Link to="/userprofile">My Recipes</Link>
+            <Link to="/allrecipes">All Recipes</Link>
+            </>
+           )}
+    </header>
   );
 }
 

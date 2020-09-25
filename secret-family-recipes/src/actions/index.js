@@ -1,18 +1,16 @@
 import axios from 'axios';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 
-
-export const SET_LOGGED_IN = "SET_LOGGED_IN";
-export const SET_LOGGED_OUT = "SET_LOGGED_OUT";
-export const USER_SUCCESS = "USER_SUCCESS";
+export const USER_LOGIN = "USER_LOGIN";
 export const USER_LOGOUT = "USER_LOGOUT";
-
-export const SET_USER_INFO = "SET_USER_INFO";
 export const FETCH_RECIPES = "FETCH_RECIPES";
 export const FETCH_RECIPES_SUCCESS = "FETCH_RECIPES_SUCCESS";
 export const FETCH_A_RECIPE = "FETCH_A_RECIPE";
 export const DELETE_RECIPE = "DELETE_RECIPE";
 export const PUT_RECIPE = "PUT_RECIPE";
+
+export const userLogin = () => ( { type: USER_LOGIN });
+// export const userLogout = () => ( { type: USER_LOGOUT });
 
 export const fetchRecipes = () => {
     return (dispatch) => {
@@ -41,7 +39,7 @@ export const fetchArecipe = (recipeData) => {
               type: FETCH_A_RECIPE, 
               payload: res.data
             })
-          window.location.reload()
+        //   window.location.reload()
         })
         .catch(err => {
           console.log(err)
@@ -85,20 +83,15 @@ export const putRecipe = (id, newData) => dispatch => {
         })
 }
 
-export const setLoggedOut = () => {
-    return (dispatch) => {
-        dispatch({ type: SET_LOGGED_OUT });
-        axiosWithAuth()
-        .get('/logout')
-        .then(res => {
-            console.log(res)
-            dispatch({
-                type: USER_LOGOUT
-            })
-        })
-        .catch(err => {
-            console.log(err)
-        })
-    }
-};
-
+export const userLogout = () => dispatch => {
+    localStorage.removeItem('token')
+    axios
+    .get('http://hsmm-secretfamilyrecipe.herokuapp.com/logout')
+    .then(res => {
+        // console.log(res)
+        dispatch({ type: USER_LOGOUT })
+    })
+    .catch(err => {
+        console.log(err)
+    })
+}

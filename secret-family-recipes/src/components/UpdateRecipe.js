@@ -34,7 +34,6 @@ const UpdateRecipe = (props) => {
     const { id } = useParams();
     const { putRecipe } = props;
     const history = useHistory();
-    const [ pushRecipeDetails, setPushRecipeDetails ] = useState()
 
  // REPOPULATES EDIT FORM WITH THE RECIPE INFO OF THE ID REQUESTED
     useEffect(() => {

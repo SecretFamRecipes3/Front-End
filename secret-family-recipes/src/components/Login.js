@@ -5,9 +5,8 @@ import styled from 'styled-components';
 
 import * as yup from 'yup';
 import formSchema from './validation/formSchema';
-import { axiosWithAuth } from '../utils/axiosWithAuth';
-import { SET_LOGGED_IN } from '../actions/index';
 import axios from 'axios';
+import { userLogin, userLogout } from '../actions';
 
 //styled-components
 const StyledForm = styled.form`
@@ -85,6 +84,11 @@ const Login = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
   // const [post, setPost] = useState([]);
+
+  useEffect(() => {
+    userLogin();
+    userLogout();
+  }, [])
 
   // INPUT HANDLER
   const changeHandler = (evt) => {
@@ -203,4 +207,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, {})(Login);
+export default connect(mapStateToProps, { userLogin, userLogout })(Login);

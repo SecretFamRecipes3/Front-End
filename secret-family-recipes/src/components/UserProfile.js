@@ -16,7 +16,7 @@ h1,p{
 `
 
 const UserProfile = (props) => {
-    const { fetchRecipes, loadingRecipes } = props;
+    const { fetchRecipes } = props;
 
     // GETTING RECIPES FROM BACK VIA ACTION/REDUCER
     useEffect(() => {

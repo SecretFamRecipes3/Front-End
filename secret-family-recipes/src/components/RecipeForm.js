@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import * as yup from 'yup';
 import { connect } from 'react-redux';
 
-import axios from 'axios';
 import schema from './validation/formSchemaRecipes'
 
 import styled from 'styled-components'

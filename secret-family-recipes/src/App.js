@@ -10,10 +10,21 @@ import Signup from './components/Signup';
 import Logout from './components/Logout';
 import UpdateRecipe from './components/UpdateRecipe';
 import AllRecipes from './components/AllRecipes';
+import { userLogin, userLogout } from './actions/index';
 
 import './App.css';
 
 const App = (props) => {
+  const { userLogin, userLogout } = props;
+
+useEffect(() => {
+  if (localStorage.getItem('token')){
+    userLogin();
+  }else {
+    userLogout();
+  }
+}, [userLogin, userLogout])
+
   return (
     <Router>
       <div className="App">
@@ -35,6 +46,7 @@ const App = (props) => {
         <Route path="/update-recipe/:id">
           <UpdateRecipe />
         </Route>
+        <Route component={Login} />
       </Switch>
       </div>
     </Router>
@@ -45,7 +57,8 @@ function mapStateToProps(state) {
   return {
     recipes: state.recipes,
     loadingRecipes: state.loadingRecipes,
+    loggedIn: state.loggedIn,
   };
 }
 
-export default connect(mapStateToProps, {})(App);
+export default connect(mapStateToProps, { userLogin, userLogout })(App);
