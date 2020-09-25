@@ -57,14 +57,17 @@ export const recipeReducer = (state = initialState, action) => {
         case DELETE_RECIPE: 
             return {
                 ...state,
-                recipes: [...state.recipes.filter(item => item.id !== action.payload.id)]
+                recipes: state.recipes.filter(item => {
+                    // debugger
+                return item.recipeid != action.payload
+                })   
             }
         case PUT_RECIPE: 
             return {
                 ...state,
                 recipes: state.recipes.map((item) =>{
                 //    debugger // if(item.recipeid != action.payload[0]){
-            if(item.recipeid != action.payload.recipeid){
+            if(item.recipeid === action.payload.recipeid){
                         // console.log(action.payload[1]) 
                     console.log(action.payload)
                     return action.payload

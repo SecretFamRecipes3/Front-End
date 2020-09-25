@@ -12,7 +12,7 @@ function RecipeList(props) {
 
     return(
         <>
-        <div>
+        <div className="recipeList">
             {recipes.map((recipeItem) => {
                 return <RecipeCard key={recipeItem.recipeid} recipe={recipeItem} />
             })}

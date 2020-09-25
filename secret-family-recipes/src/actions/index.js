@@ -55,12 +55,11 @@ export const deleteRecipe = (id) => {
         axiosWithAuth()
         .delete(`http://hsmm-secretfamilyrecipe.herokuapp.com/recipes/recipe/${id}`)
         .then(res => {
-            // console.log(res)
-            // dispatch({ 
-            //     type: DELETE_RECIPE,
-            //     payload: res.data
-            // })
-            window.location.reload()
+            // console.log('delete from action', res)
+            dispatch({ 
+                type: DELETE_RECIPE,
+                payload: id
+            })
         })
         .catch(err => {
             console.log(err)
@@ -68,17 +67,17 @@ export const deleteRecipe = (id) => {
     }
 }
 
-export const putRecipe = (id, newData, editData) => dispatch => {
+export const putRecipe = (id, newData) => dispatch => {
     // debugger
     axiosWithAuth()
         .put(`/recipes/recipe/${id}`, newData)
         .then(res => {
-            console.log(res) // -- do FIRST
+            console.log('put res', res) // -- do FIRST
             dispatch({ 
                 type: PUT_RECIPE, 
-                payload: editData
+                // payload: editData
                 // payload: [id, newData]
-                // payload: res.data -- IMP!
+                payload: res.data 
             })
         })
         .catch(err => {

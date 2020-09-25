@@ -26,10 +26,16 @@ const AllRecipes = (props) => {
         <div>
           {userRecipes.map((item) => {
           return (
-            <Recipe 
-              key={item.recipeid}
-              item={item}
-            />
+            
+            <div>
+            <div>{item.title}</div>
+            <p>{item.source}</p>
+            <p>{item.preptime}</p> 
+            </div>
+            // <Recipe 
+            //   key={item.recipeid}
+            //   item={item}
+            // />
           )
         })}
         </div>
