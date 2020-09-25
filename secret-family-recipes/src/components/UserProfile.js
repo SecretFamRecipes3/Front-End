@@ -22,7 +22,7 @@ p{
 `
 
 const UserProfile = (props) => {
-    const { fetchRecipes, loadingRecipes } = props;
+    const { fetchRecipes } = props;
 
     // GETTING RECIPES FROM BACK VIA ACTION/REDUCER
     useEffect(() => {
@@ -35,7 +35,7 @@ const UserProfile = (props) => {
                 <h1>My Recipes</h1>
                 <p className='title'>Here you will find all of your family's favorites <br/> stored in one convenient location!</p>
 
-                <div>
+                <div className="recipeComponent">
                     <RecipeList />
                 </div>
                     <div className="recipeForm">

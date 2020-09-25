@@ -34,7 +34,6 @@ const UpdateRecipe = (props) => {
     const { id } = useParams();
     const { putRecipe } = props;
     const history = useHistory();
-    const [ pushRecipeDetails, setPushRecipeDetails ] = useState()
 
  // REPOPULATES EDIT FORM WITH THE RECIPE INFO OF THE ID REQUESTED
     useEffect(() => {
@@ -51,15 +50,15 @@ const UpdateRecipe = (props) => {
                     categories: res.data.categories.category,
                     instruction: recipeDetails.instruction.trim(),
             })
-            setPushRecipeDetails({
-                recipeid: res.data.recipeid,
-                title: res.data.title,
-                source: res.data.source,
-                preptime: res.data.preptime,
-                ingredients: res.data.ingredients.ingredient,
-                categories: res.data.categories.category,
-                instruction: recipeDetails.instruction.trim(),
-            })
+            // setPushRecipeDetails({
+            //     recipeid: res.data.recipeid,
+            //     title: res.data.title,
+            //     source: res.data.source,
+            //     preptime: res.data.preptime,
+            //     ingredients: res.data.ingredients.ingredient,
+            //     categories: res.data.categories.category,
+            //     instruction: recipeDetails.instruction.trim(),
+            // })
         })
         .catch(err => {
             console.log(err)
@@ -103,10 +102,10 @@ const UpdateRecipe = (props) => {
 
     const handleSubmit = (evt)=> {
         evt.preventDefault();
-        console.log(id)
-        console.log(recipeDetails)
+        // console.log(id)
+        // console.log(recipeDetails)
         // debugger
-        putRecipe(id, recipeDetails, pushRecipeDetails)
+        putRecipe(id, recipeDetails)
         history.push('/userprofile')
     }
     
@@ -118,10 +117,7 @@ const UpdateRecipe = (props) => {
         // .catch(err => {
         //     console.log(err)
         // })
-
-   
-
-
+        
     return (
         <div>
       <form className='form container' onSubmit={handleSubmit}>

@@ -24,15 +24,18 @@
   margin-right: 2%;
 }
 
-.recipeContainer {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
+
+.styledRecipeContainer {
+  /* border: 2px solid black; */
+  width: 45%;
 }
 
-.recipeCard {
-  border: 2px solid black;
-  margin: 2%;
+.recipeList {
+  /* border: 2px solid purple; */
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
 }
 
 .instruction {
