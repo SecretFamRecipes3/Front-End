@@ -20,6 +20,7 @@ const StyledLink = styled(Link)`
 
 function Header(props) {
   const { loggedIn } = props;
+  const marketing = `https://gracious-snyder-70f67c.netlify.app/blog.html`;
 
   return (
     <div className="navContainer">
@@ -32,6 +33,7 @@ function Header(props) {
                 <Link to="/allrecipes">All Recipes</Link>
               </div>
         )}
+         <a href={marketing}>Marketing</a>
         {loggedIn && ( // if you are logged out
             <div className="navLinks">
             <Link to="/logout">Log Out</Link>
