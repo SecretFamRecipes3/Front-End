@@ -9,9 +9,15 @@ import styled from 'styled-components'
 
 const StyledProfile = styled.div`
  
-h1,p{
+h1{
     text-align:center;
+  
+}
+
+p{
     text-align:center;
+    margin: 0 auto;
+    padding-bottom: 2%;
 }
 `
 
