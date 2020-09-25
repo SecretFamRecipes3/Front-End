@@ -175,6 +175,9 @@ function RecipeForm(props) {
         // }
       }
       fetchArecipe(newRecipe)
+      setFormRecipeValues(initialRecipeFormValues)
+      setIngredients(ingredientsObj)
+
     }
 
     // VALIDATION

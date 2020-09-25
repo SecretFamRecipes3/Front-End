@@ -35,7 +35,7 @@ border: 5px solid #89B0AE;
  }
 `
 
-const AllRecipes = (props) => {
+const AllRecipes = () => {
     const [ userRecipes, setUserRecipes ] = useState([]);
     const [ show, setShow ] = useState(false);  
 
