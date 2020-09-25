@@ -7,8 +7,8 @@
   min-height: 8vh;
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
+  align-items: flex-end;
+  justify-content: space-between;
   font-size: calc(10px + 2vmin);
   color: white;
 }
@@ -16,14 +16,6 @@
 .title {
   margin-right: 37%;
 }
-
-.navLinks {
-  width: 40%;
-  display: flex;
-  justify-content: space-between;
-  margin-right: 2%;
-}
-
 
 .styledRecipeContainer {
   /* border: 2px solid black; */
@@ -38,6 +30,47 @@
   justify-content: space-evenly;
 }
 
+.allRecipeList{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  margin-top: 5%;
+}
+
 .instruction {
   line-height: 1.5;
 }
+
+.navContainer {
+  /* border: 1px solid red; */
+  width: 40%;
+  margin-right: 2%;
+  margin-bottom: 1%;
+}
+
+.navLinks {
+  /* border: 1px solid black; */
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+  font-size: 1.5rem;
+}
+
+a:hover {
+  color: white;
+}
+
+.mainTitle {
+  /* border: 1px solid green; */
+  width: 50%;
+ font-size: 2rem;
+ margin-left: 3%;
+}
+

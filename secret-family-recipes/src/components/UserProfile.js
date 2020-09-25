@@ -19,6 +19,14 @@ p{
     margin: 0 auto;
     padding-bottom: 2%;
 }
+
+.title {
+    margin: auto;
+}
+
+.recipeComponent {
+    margin-top: 5%;
+}
 `
 
 const UserProfile = (props) => {

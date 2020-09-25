@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+import SingleRecipe from './SingleRecipe';
 import styled from 'styled-components';
 
 const StyledRecipe=styled.div`
@@ -53,74 +54,19 @@ const AllRecipes = (props) => {
     }, [])
 
     return (
-      <div className="styledRecipeContainer">
-        <StyledRecipe className='recipeCard'>
+      <>
+        <div className="allRecipeList">
           {userRecipes.map((item) => {
-            return (
-              <div key={item.recipeid}>
-                    <h2>{item.title}</h2>
-                    <h3>Source: {item.source}</h3>
-                    <h3>Prep Time: {item.preptime}</h3>
-                    
-                    <div className='showAndHide'>
-                    <div onClick={() => setShow(!show)}>
-                                { !show ? (
-                            <div className='showAndHide'>Show Details</div>
-                        ) : (
-                            <div>
-                                <div className='showAndHide'>Close Details</div>
-                            
-                                <div>
-                                <h3 className= 'ingredients'>Ingredients:</h3>
-                                {item.ingredients.map((ing) => {
-                                return (
-                                    <ul>
-                                    <li key={ing.ingredient.ingredientid}>{ing.ingredient.amount} {ing.ingredient.name} </li>
-                                    </ul>
-                                )
-                                })}
-                                </div>
-                                <br/>
-                                <div className='instruction'>{item.instruction}
-                                    <h3 >Categories:</h3>
-                                        {item.categories.map((cat)=>{
-                                            return(
-                                                <div key={cat.category.categoryid}>{cat.category.categoryname}</div>
-                                            )
-                                        })}
-                                </div>
-                    </div>
-                    )}
-            </div>
-            </div>
-              </div>
-            )
-          })}
-        </StyledRecipe>
-      </div>
+          return (
+            <SingleRecipe 
+              key={item.recipeid}
+              recipe={item}
+            />
+          )
+        })}
+        </div>
+      </>
     )
-
-    // return (
-    //   <>
-    //     <div>
-    //       {userRecipes.map((item) => {
-    //       return (
-            
-    //         <div key={item.recipeid}>
-    //         <div>{item.title}</div>
-    //         <p>{item.source}</p>
-    //         <p>{item.preptime}</p> 
-    //         </div>
-    //         // <Recipe 
-    //         //   key={item.recipeid}
-    //         //   item={item}
-    //         // />
-    //       )
-    //     })}
-    //     </div>
-    //   </>
-    // )
-
 }
 
 export default AllRecipes;
