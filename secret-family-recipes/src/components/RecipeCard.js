@@ -35,6 +35,7 @@ border: 5px solid #89B0AE;
   background-color: #BEE3DB;
   border-radius: 10px;
  }
+
 `
 
 const RecipeCard = (props) => {
@@ -61,7 +62,7 @@ const RecipeCard = (props) => {
                             <div className='showAndHide'>Show Details</div>
                         ) : (
                             <div>
-                                <div className='showAndHide'>Close Details</div>
+                                {/* <div className='showAndHide'>Close Details</div> */}
                             
                                 <div>
                                 <h3 className= 'ingredients'>Ingredients:</h3>
@@ -74,13 +75,19 @@ const RecipeCard = (props) => {
                                 })}
                                 </div>
                                 <br/>
-                                <div className='instruction'>{recipe.instruction}
+                                <div className='instruction'>
+                                    <h3>Instructions:</h3>
+                                    {recipe.instruction}
+                                </div>
+                                <div className='categories'>
                                     <h3 >Categories:</h3>
                                         {recipe.categories.map((item)=>{
                                             return(
                                                 <div key={item.category.categoryid}>{item.category.categoryname}</div>
                                             )
                                         })}
+                                        <br/>
+                                    <div className='showAndHide'>Close Details</div>
                                 </div>
                         <button className ='editBtn' onClick={() => history.push(`/update-recipe/${recipe.recipeid}`)}>Edit</button>
                         <button className='deleteBtn' id={recipe.recipeid} onClick={handleDelete}>Delete</button>

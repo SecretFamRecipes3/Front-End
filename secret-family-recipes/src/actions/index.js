@@ -39,7 +39,7 @@ export const fetchArecipe = (recipeData) => {
               type: FETCH_A_RECIPE, 
               payload: res.data
             })
-        //   window.location.reload()
+        // window.location.reload()
         })
         .catch(err => {
           console.log(err)

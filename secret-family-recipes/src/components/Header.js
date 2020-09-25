@@ -23,7 +23,9 @@ function Header(props) {
   const marketing = `https://gracious-snyder-70f67c.netlify.app/blog.html`;
 
   return (
-    <div className="navContainer">
+<div className="navContainer">
+      <div className="marketing"><a href={marketing}>Marketing</a></div>
+    <div >
         {!loggedIn && ( // if you are logged in
               <div className="navLinks">
                 <Link to="/login">Login</Link>
@@ -33,7 +35,7 @@ function Header(props) {
                 <Link to="/allrecipes">All Recipes</Link>
               </div>
         )}
-         <a href={marketing}>Marketing</a>
+        
         {loggedIn && ( // if you are logged out
             <div className="navLinks">
             <Link to="/logout">Log Out</Link>
@@ -42,7 +44,8 @@ function Header(props) {
             </div>
            )}
     </div>
-  );
+</div>
+  )
 }
 
 const mapStateToProps = (state) => {

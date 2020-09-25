@@ -44,14 +44,23 @@
 
 .navContainer {
   /* border: 1px solid red; */
-  width: 60%;
+  width: 80%;
   margin-right: 2%;
   margin-bottom: 1%;
+  display: flex;
+  justify-content: space-around;
+  
+}
+
+.marketing {
+  /* border: 1px solid green; */
+  /* margin-left: 5%; */
+  margin-right: 5%;
 }
 
 .navLinks {
   /* border: 1px solid black; */
-  width: 100%;
+  width: 105%;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
