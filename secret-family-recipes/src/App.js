@@ -29,7 +29,7 @@ useEffect(() => {
     <Router>
       <div className="App">
         <header className="App-header">
-          <div className="title">
+          <div className="mainTitle">
             <h3>Secret Family Recipes</h3>
           </div>
           <Header />

@@ -13,6 +13,14 @@ h1,p{
     text-align:center;
     text-align:center;
 }
+
+.title {
+    margin: auto;
+}
+
+.recipeComponent {
+    margin-top: 5%;
+}
 `
 
 const UserProfile = (props) => {

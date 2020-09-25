@@ -16,13 +16,13 @@ const StyledLink = styled(Link)`
     text-decoration: none; */
   }
   color: black;
-`;
+`
 
 function Header(props) {
   const { loggedIn } = props;
 
   return (
-    <header>
+    <div className="navContainer">
         {!loggedIn && ( // if you are logged in
               <div className="navLinks">
                 <Link to="/login">Login</Link>
@@ -33,13 +33,13 @@ function Header(props) {
               </div>
         )}
         {loggedIn && ( // if you are logged out
-            <>
+            <div className="navLinks">
             <Link to="/logout">Log Out</Link>
             <Link to="/userprofile">My Recipes</Link>
             <Link to="/allrecipes">All Recipes</Link>
-            </>
+            </div>
            )}
-    </header>
+    </div>
   );
 }
 
